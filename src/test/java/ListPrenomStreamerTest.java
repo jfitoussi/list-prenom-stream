@@ -36,4 +36,15 @@ public class ListPrenomStreamerTest {
         assertThat(top5name2009to2016, contains("Adam", "Alexandre", "Victor"));
     }
 
+    @Test
+    public void top_3_girl_name() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        
+        List<String> top3GirlNameIn2009 = listPrenomStreamer.top3GirlName2009();
+
+        // Then
+        assertThat(top3GirlNameIn2009, contains("Alexia","Victoria","Eve"));
+    }
+
 }

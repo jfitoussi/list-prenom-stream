@@ -8,10 +8,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.function.Predicate;
 
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.gson.Gson;
 
 import models.Fields;
 import models.ParisData;
+import models.Records;
 
 public class ListPrenomStreamer {
 
@@ -43,6 +49,17 @@ public class ListPrenomStreamer {
     	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
     	Stream<String> top5Prenoms2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).limit(5);
     	return top5Prenoms2009to2016Stream.collect(Collectors.toList());
+    }
+
+    public List<String> top3GirlName2009() {
+    	
+    	Predicate<Records> nameIn2009 = r -> r.getFields().getAnnee() == 2009 && r.getFields().getSexe().equals("F");
+    	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
+    	
+    	Stream<String> top3NameIn2009 = this.parisData.getRecords().stream().filter(nameIn2009).map(r -> r.getFields()).sorted(topOrder.reversed()).map(f -> f.getPrenoms()).limit(3);
+    	List<String> listTop3GirlName = top3NameIn2009.collect(Collectors.toList());
+    	
+        return listTop3GirlName;
     }
 
 }
