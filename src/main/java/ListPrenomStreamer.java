@@ -25,6 +25,7 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3girlname2009());
         System.out.println(listPrenomStreamer.top3boyname2012());
         System.out.println(listPrenomStreamer.top5bestname2009_2016());
+        System.out.println(listPrenomStreamer.top10worstname2009_2016());
     }
 
     public int getSize() {
@@ -60,6 +61,25 @@ public class ListPrenomStreamer {
         sum.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(5)
+                .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
+
+        List<String> resultat = result.entrySet().stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return resultat;
+    }
+
+    public List<String> top10worstname2009_2016() {
+        Map<String, Integer> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms()!=null)
+                .filter(records -> records.getFields().getAnnee() >= 2009 &&  records.getFields().getAnnee() <= 2016 )
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        sum.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue())
+                .limit(10)
                 .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
 
         List<String> resultat = result.entrySet().stream()
