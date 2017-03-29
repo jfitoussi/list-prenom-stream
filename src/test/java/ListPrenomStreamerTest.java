@@ -49,4 +49,15 @@ public class ListPrenomStreamerTest {
         assertThat(top3, contains("Gabriel","Louise","Arthur"));
     }
 
+    @Test
+    public void top_10_worst_name_2009_2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+
+        List<String> top10 = listPrenomStreamer.top10worstname2009_2016();
+        // Then
+        assertThat(top10.size(), is(10));
+        assertThat(top10, contains("Gabriel","Louise","Arthur"));
+    }
+
 }
