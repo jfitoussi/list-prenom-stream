@@ -1,5 +1,7 @@
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -12,6 +14,28 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(listPrenomStreamer.getSize(), is(10));
+    }
+
+    @Test
+    public void top3girls_should_be_louise_camille_chloe() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+
+        // Then
+        List<String> top3girl = listPrenomStreamer.top3girlname2009();
+        assertThat(top3girl.size(), is(3));
+        assertThat(top3girl, contains("Louise", "Camille", "Chloe"));
+    }
+
+    @Test
+    public void top3boys_should_be_gabriel_adam_arthur() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+
+        // Then
+        List<String> top3boy = listPrenomStreamer.top3boyname2012();
+        assertThat(top3boy.size(), is(3));
+        assertThat(top3boy, contains("Gabriel", "Adam", "Arthur"));
     }
 
 }
