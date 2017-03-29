@@ -24,7 +24,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<String> top32010 = listPrenomStreamer.top3name2010();
         // Then
-        assertThat(top32010, contains("Adam", "Alexandre", "Victor"));
+        assertThat(top32010, contains("Patrick", "Ben", "Gerard"));
     }
     
     @Test
@@ -33,7 +33,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<String> top5name2009to2016 = listPrenomStreamer.top5name2009to2016();
         // Then
-        assertThat(top5name2009to2016, contains("Adam", "Alexandre", "Victor"));
+        assertThat(top5name2009to2016, contains("Patrick", "Martin", "Ben", "Adam", "Alexia"));
     }
 
     @Test
