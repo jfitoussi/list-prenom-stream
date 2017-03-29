@@ -1,12 +1,12 @@
+import com.google.gson.Gson;
+import models.ParisData;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.gson.Gson;
-
-import models.ParisData;
 
 public class ListPrenomStreamer {
 
@@ -23,6 +23,7 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3name2010());
         System.out.println(listPrenomStreamer.top3NameGirl2009());
+        System.out.println(listPrenomStreamer.top10WorstName2009To2016());
 //        System.out.println(listPrenomStreamer.top3name2008());
     }
 
@@ -45,6 +46,19 @@ public class ListPrenomStreamer {
                 .limit(3)
                 .map(record -> record.getFields().getPrenoms())
                 .collect(Collectors.toList());
+    }
+
+    public List<String> top10WorstName2009To2016(){
+        Map<String, Integer> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms()!=null)
+                .filter(records -> records.getFields().getAnnee() >= 2009 &&  records.getFields().getAnnee() <= 2016 )
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
+
+
+        return sum.entrySet().stream()
+                             .sorted(Comparator.comparingInt(value -> value.getValue()))
+                             .limit(10).map(stringIntegerEntry -> stringIntegerEntry.getKey())
+                             .collect(Collectors.toList());
     }
 
 }
