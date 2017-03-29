@@ -1,11 +1,13 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
 import models.Fields;
+import models.Pair;
 import models.ParisData;
 import models.Records;
 
@@ -23,6 +25,7 @@ public class ListPrenomStreamer {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3Name2010());
+        System.out.println(listPrenomStreamer.allNamesPresent2009To2016());
     }
 
     public int getSize() {
@@ -40,8 +43,7 @@ public class ListPrenomStreamer {
 
     public List<String> top3GirlsName2009() {
         return parisData.getRecords().stream()
-                .filter(records -> records.getFields().getAnnee() == 2009)
-                .filter(records -> records.getFields().getSexe().equals("F"))
+                .filter(records -> records.getFields().getAnnee() == 2009 && records.getFields().getSexe().equals("F"))
                 .sorted((field1, field2) -> field2.getFields().getNombre() - field1.getFields().getNombre())
                 .map(records -> records.getFields().getPrenoms())
                 .limit(3)
@@ -50,8 +52,7 @@ public class ListPrenomStreamer {
 
     public List<String> top3BoysName2012() {
         return parisData.getRecords().stream()
-                .filter(records -> records.getFields().getAnnee() == 2012)
-                .filter(records -> records.getFields().getSexe().equals("M"))
+                .filter(records -> records.getFields().getAnnee() == 2012 && records.getFields().getSexe().equals("M"))
                 .sorted((field1, field2) -> field2.getFields().getNombre() - field1.getFields().getNombre())
                 .map(records -> records.getFields().getPrenoms())
                 .limit(3)
@@ -59,19 +60,21 @@ public class ListPrenomStreamer {
     }
 
     public List<String> top5Name2009To2016() {
-        Map<String, Integer> sum = parisData.getRecords().stream()
-                .filter(records -> records.getFields().getPrenoms() != null)
+        Map<String,Integer> map = new HashMap<>();
+        Function<Records, Pair<String, Integer>> addValue = r -> {
+            String k = r.getFields().getPrenoms();
+            Integer value = map.getOrDefault(k, 0) + r.getFields().getNombre();
+            map.put(k,value);
+            return new Pair<>(k,value);
+        };
+        Comparator<Pair<String, Integer>> comp = (pair1, pair2) -> pair2.last - pair1.last;
+        return parisData.getRecords().stream()
                 .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
-                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
-
-        Map<String, Integer> result = new LinkedHashMap<>();
-        sum.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .map(addValue)
+                .sorted(comp)
+                .map(pair -> pair.first)
+                .distinct()
                 .limit(5)
-                .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
-
-        return result.entrySet().stream()
-                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
@@ -88,8 +91,7 @@ public class ListPrenomStreamer {
 
     public List<String> top12WorstGirls2016() {
         return parisData.getRecords().stream()
-                .filter(records -> records.getFields().getAnnee() == 2016)
-                .filter(records -> records.getFields().getSexe().equals("F"))
+                .filter(records -> records.getFields().getAnnee() == 2016 && records.getFields().getSexe().equals("F"))
                 .sorted(Comparator.comparingInt(field -> field.getFields().getNombre()))
                 .map(records -> records.getFields().getPrenoms())
                 .limit(12)
@@ -103,5 +105,46 @@ public class ListPrenomStreamer {
                         Fields::getSexe,
                         Collectors.mapping(Fields::getPrenoms, Collectors.toList())
                 ));
+    }
+
+    public List<String> namesOnlyIn2011() {
+        Function<Records, Pair<Integer, String>> toTuple = r -> {
+            String prenom = r.getFields().getPrenoms();
+            Integer annee = r.getFields().getAnnee();
+            return new Pair<Integer, String>(annee,prenom) {
+                @Override
+                public boolean equals(Object obj) {
+                    return obj instanceof Pair;
+                }
+                @Override
+                public int hashCode() {
+                    return this.last.hashCode();
+                }
+            };
+        };
+        return parisData.getRecords().stream()
+                .map(toTuple)
+                .distinct()
+                .filter(integerStringPair -> integerStringPair.first == 2011)
+                .map(integerStringPair -> integerStringPair.last)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> allNamesPresent2009To2016() {
+        Map<String, List<Integer>> map = new HashMap<>();
+        Function<Records, Pair<String,List<Integer>>>  toMap = r -> {
+            Integer annee = r.getFields().getAnnee();
+            String nom = r.getFields().getPrenoms();
+            List<Integer> list = map.getOrDefault(nom, new ArrayList<>());
+            list.add(annee);
+            map.put(nom,list);
+            return new Pair<>(nom, list);
+        };
+        return parisData.getRecords().stream()
+                .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
+                .map(toMap)
+                .filter(stringListPair -> stringListPair.last.size() == 8)
+                .map(stringListPair -> stringListPair.first)
+                .collect(Collectors.toList());
     }
 }
