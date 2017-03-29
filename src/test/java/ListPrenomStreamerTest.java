@@ -51,7 +51,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NamesBetween2009To2016() throws Exception {
+    public void top5NamesBetween2009To2016() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         List<String> top3name = listPrenomStreamer.top5Names2009to2016();
@@ -59,6 +59,17 @@ public class ListPrenomStreamerTest {
         // Then
         assertThat(top3name.size(), is(5));
         assertThat(top3name, contains("Gabriel", "Adam", "Louise", "Raphaël", "Arthur"));
+    }
+
+    @Test
+    public void top10WorstNamesBetween2009To2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        List<String> top3name = listPrenomStreamer.top10WorstNames2009to2016();
+
+        // Then
+        assertThat(top3name.size(), is(10));
+        assertThat(top3name, contains("Aaliyah", "Aaron", "Abby", "Abd", "Abdallah", "Abdel", "Abdelkader", "Abderrahmane", "Abdou", "Abdoul"));
     }
 
 }
