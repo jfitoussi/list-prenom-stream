@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ListPrenomStreamerTest {
 
@@ -29,5 +30,48 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         assertThat(listPrenomStreamer.top3NameGirl2009(),is(Arrays.asList("Louise", "Camille", "Chloe")));
+    }
+
+    @Test
+    public void top_10_Worst_Name_2009_To_2016() throws Exception{
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+
+        assertThat(listPrenomStreamer.top10WorstName2009To2016(),is(Arrays.asList("Ibrahim",
+                                                                                  "Maël",
+                                                                                  "Baptiste",
+                                                                                  "Noé",
+                                                                                  "Ismaël",
+                                                                                  "Ethan",
+                                                                                  "Liam",
+                                                                                  "Victor",
+                                                                                  "Louis",
+                                                                                  "Camille")));
+
+    }
+
+    @Test
+    public void top_12_Worst_Girl_Name_2016() throws Exception{
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2016.json");
+        assertThat(listPrenomStreamer.top12WorstGirlName2016(),is(Arrays.asList("Alyah",
+                                                                                "Appoline",
+                                                                                "Athéna",
+                                                                                "Audrey",
+                                                                                "Elyana",
+                                                                                "Geneviève",
+                                                                                "Hadja",
+                                                                                "Kendra",
+                                                                                "Laya",
+                                                                                "Maï",
+                                                                                "Maxime",
+                                                                                "Saja")));
+    }
+
+    @Test
+    public void sort_By_Gender() throws Exception{
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2016_short.json");
+        Map<String,List<String>> mapGenderName = listPrenomStreamer.allNamesByGender();
+
+        assertThat(mapGenderName.get("F"),is(Arrays.asList("Louise","Emma","Alice")));
+        assertThat(mapGenderName.get("M"),is(Arrays.asList("Gabriel","Adam","Raphaël","Louis","Arthur","Paul","Alexandre")));
     }
 }
