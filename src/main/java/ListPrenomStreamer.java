@@ -21,13 +21,14 @@ public class ListPrenomStreamer {
     }
 
     public static void main(String[] args) throws IOException {
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         System.out.println("Size : " + listPrenomStreamer.getSize());
         System.out.println("Top 3 names 2010 : " + listPrenomStreamer.top3Names2010());
         System.out.println("Top 3 names girls 2009 : " + listPrenomStreamer.top3NamesGirl2009());
         System.out.println("Top 3 names boys 2012 : " + listPrenomStreamer.top3NamesBoys2012());
         System.out.println("Top 5 names between 2009 and 2016: " + listPrenomStreamer.top5Names2009to2016());
+        System.out.println("All names present from 2009 to 2016 :" + "(Size: "+listPrenomStreamer.AllNamesPresentFrom2009To2016().size()+")"+listPrenomStreamer.AllNamesPresentFrom2009To2016());
     }
 
     public int getSize() {
@@ -70,4 +71,14 @@ public class ListPrenomStreamer {
                 .map(Fields::getPrenoms).distinct().limit(5);
         return top5name2009to2016Stream.collect(Collectors.toList());
     }
+
+    public List<String> AllNamesPresentFrom2009To2016() {
+        List<String> AllNamesPresentFrom2009To2016 = parisData.getRecords().stream().map(records -> records.getFields())
+                .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016)
+                .map(fields -> fields.getPrenoms()).distinct()
+                .collect(Collectors.toList());
+        return AllNamesPresentFrom2009To2016;
+    }
+
+
 }
