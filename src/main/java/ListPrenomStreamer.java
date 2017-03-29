@@ -88,4 +88,15 @@ public class ListPrenomStreamer {
         stream = stream.sorted(comparator).limit(10);
         return stream.collect(Collectors.toList());
     }
+
+    public List<Records> worst10GilName2016() {
+        Comparator<Records> comparator = (Records r1, Records r2)-> {
+            return ((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
+        };
+
+        Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() == 2016 && records.getFields().getSexe().equals("F")));
+
+        stream = stream.sorted(comparator).limit(12);
+        return stream.collect(Collectors.toList());
+    }
 }

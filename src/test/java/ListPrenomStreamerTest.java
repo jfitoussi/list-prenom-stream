@@ -17,7 +17,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(22));
+        assertThat(listPrenomStreamer.getSize(), is(35));
     }
 
     @Test
@@ -69,15 +69,26 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void worst_10_best_name_2009_2016(){
+    public void worst_10_name_2009_2016(){
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
 
         Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
 
         List<String> nameList = listWorst10.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
+        //assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
+        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
+    }
 
+    @Test
+    public void worst_10_name_2016(){
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        List<Records> listWorst10Girl = listPrenomStreamer.worst10GilName2016();
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+
+        List<String> nameList = listWorst10Girl.stream().map(getNameFunction).collect(Collectors.toList());
+        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Amelie", "Aisse", "Dior"));
     }
 
 }
