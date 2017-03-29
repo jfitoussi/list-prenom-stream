@@ -9,13 +9,22 @@ The data give the number of name by year, with name, gender, year.
 https://opendata.paris.fr/explore/dataset/liste_des_prenoms_2004_a_2012
 
 ## Goals
-* Write test thanks to short list
 
+### Stream Data
+(For each goal write test thanks to short list)
 * Number of records
-* Top 3 of best name in 2008
+* Top 3 of best name in 2010
 * Top 3 of best girl name in 2009
 * Top 3 of best boy name in 2012
-* Top 5 of best name in the whole range
+* Top 5 of best name from 2009 to 2016
+* Top 10 of worst name from 2009 to 2016
+* Top 12 of worst girl name in 2016
 * All names by gender
-* Name appear just in 2007
+* Name appear just in 2011
+* All names present from 2009 to 2016
 * Top 5 of the best first letter by year
+* Top 24 of best letters from 2009 to 2016
+
+### Stream Http API
+* Modify code to use http api with hardcode parameter
+* Modify code to use http api with flexible parameter
