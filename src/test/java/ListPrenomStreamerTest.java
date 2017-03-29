@@ -76,7 +76,7 @@ public class ListPrenomStreamerTest {
         Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
 
         List<String> nameList = listWorst10.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Kevin", "Abraham"));
+        assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
 
     }
 

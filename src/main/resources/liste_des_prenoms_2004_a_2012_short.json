@@ -75,7 +75,7 @@
       "fields": {
         "nombre": 100,
         "annee": "2016",
-        "prenoms": "Isma\u00ebl",
+        "prenoms": "Isma",
         "sexe": "M"
       },
       "record_timestamp": "2017-01-06T15:40:05+00:00"
