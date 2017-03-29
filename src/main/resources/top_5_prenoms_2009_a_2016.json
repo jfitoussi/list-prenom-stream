@@ -117,7 +117,7 @@
       "datasetid": "liste_des_prenoms_2004_a_2012",
       "recordid": "506ca1095b161fa0c936444d252bbe4447ed7faa",
       "fields": {
-        "nombre": 1,
+        "nombre": 3,
         "annee": "2014",
         "prenoms": "Lipton",
         "sexe": "M"

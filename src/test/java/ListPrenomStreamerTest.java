@@ -52,12 +52,13 @@ public class ListPrenomStreamerTest {
     @Test
     public void top_10_worst_name_2009_2016() throws Exception {
         // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_5_prenoms_2009_a_2016.json");
 
         List<String> top10 = listPrenomStreamer.top10worstname2009_2016();
         // Then
         assertThat(top10.size(), is(10));
-        assertThat(top10, contains("Gabriel","Louise","Arthur"));
+        assertThat(top10, contains("Kry","Lipton","Yanick","Andrew","christopher","christ","chris","eldii","Coralie","Tatane"));
+        // 2 - 3 - 20 - 20 - 50 - 52 - 100 - 100 - 240 -
     }
 
 }

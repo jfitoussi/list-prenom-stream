@@ -57,17 +57,11 @@ public class ListPrenomStreamer {
                 .filter(records -> records.getFields().getAnnee() >= 2009 &&  records.getFields().getAnnee() <= 2016 )
                 .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
 
-        Map<String, Integer> result = new LinkedHashMap<>();
-        sum.entrySet().stream()
+        return sum.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(5)
-                .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
-
-        List<String> resultat = result.entrySet().stream()
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
-
-        return resultat;
     }
 
     public List<String> top10worstname2009_2016() {
@@ -76,17 +70,12 @@ public class ListPrenomStreamer {
                 .filter(records -> records.getFields().getAnnee() >= 2009 &&  records.getFields().getAnnee() <= 2016 )
                 .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
 
-        Map<String, Integer> result = new LinkedHashMap<>();
-        sum.entrySet().stream()
+        return sum.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue())
                 .limit(10)
-                .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
-
-        List<String> resultat = result.entrySet().stream()
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        return resultat;
     }
 
 }
