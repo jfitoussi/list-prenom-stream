@@ -13,7 +13,9 @@ https://opendata.paris.fr/explore/dataset/liste_des_prenoms_2004_a_2012
 
 * Number of records
 * Top 3 of best name in 2008
+* Top 3 of best girl name in 2009
+* Top 3 of best boy name in 2012
 * Top 5 of best name in the whole range
-* Top 5 of the best first letter by year
 * All names by gender
 * Name appear just in 2007
+* Top 5 of the best first letter by year

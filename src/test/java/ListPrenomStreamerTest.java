@@ -1,22 +1,17 @@
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
-
-import models.ParisData;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
 
 public class ListPrenomStreamerTest {
 
     @Test
-    public void getSize() throws Exception {
+    public void size_should_be_10() throws Exception {
         // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer();
-
-        // When
-        ParisData data = listPrenomStreamer.getData(false);
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(data.getRecords(), hasSize(10));
+        assertThat(listPrenomStreamer.getSize(), is(10));
     }
 
 }
