@@ -18,10 +18,10 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NameIn2010() throws Exception {
+    public void top3NamesIn2010() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        List<String> top3name = listPrenomStreamer.top3name2010();
+        List<String> top3name = listPrenomStreamer.top3Names2010();
 
         // Then
         assertThat(top3name.size(), is(3));
@@ -29,10 +29,10 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NameGirl2009() throws Exception {
+    public void top3NamesGirl2009() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        List<String> top3name = listPrenomStreamer.top3NameGirl2009();
+        List<String> top3name = listPrenomStreamer.top3NamesGirl2009();
 
         // Then
         assertThat(top3name.size(), is(3));
@@ -40,14 +40,25 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NameBoys2012() throws Exception {
+    public void top3NamesBoys2012() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        List<String> top3name = listPrenomStreamer.top3NameBoys2012();
+        List<String> top3name = listPrenomStreamer.top3NamesBoys2012();
 
         // Then
         assertThat(top3name.size(), is(3));
         assertThat(top3name, contains("Gabriel", "Adam", "Arthur"));
+    }
+
+    @Test
+    public void top3NamesBetween2009To2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        List<String> top3name = listPrenomStreamer.top5Names2009to2016();
+
+        // Then
+        assertThat(top3name.size(), is(5));
+        assertThat(top3name, contains("Gabriel", "Adam", "Louise", "Raphaël", "Arthur"));
     }
 
 }
