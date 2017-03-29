@@ -1,17 +1,11 @@
-import static org.junit.Assert.assertThat;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.function.Predicate;
-
-import java.util.Comparator;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 
@@ -49,6 +43,23 @@ public class ListPrenomStreamer {
     	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
     	Stream<String> top5Prenoms2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).limit(5);
     	return top5Prenoms2009to2016Stream.collect(Collectors.toList());
+    }
+    
+    public List<String> top10WorstName2009to2016(){
+    	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
+    	Stream<String> top10WorstName2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).limit(10);
+    	return top10WorstName2009to2016Stream.collect(Collectors.toList());
+    }
+    
+    public List<String> top12WorstGirl2016(){
+    	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
+    	Stream<String> top12WorstGirl2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder).filter(field -> field.getAnnee() == 2016 && field.getSexe().equals("F")).map(person -> person.getPrenoms()).limit(12);
+    	return top12WorstGirl2016Stream.collect(Collectors.toList());
+    }
+    
+    public Map<String,List<String>> namesByGenre(){
+    	Map<String,List<String>> genderMap = this.parisData.getRecords().stream().map(fields -> fields.getFields()).collect(Collectors.groupingBy(Fields::getSexe,Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
+    	return genderMap;
     }
 
     public List<String> top3NameByGenderAndYear(String gender, int year) {
