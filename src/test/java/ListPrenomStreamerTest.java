@@ -15,7 +15,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(19));
+        assertThat(listPrenomStreamer.getSize(), is(20));
     }
     
     @Test
