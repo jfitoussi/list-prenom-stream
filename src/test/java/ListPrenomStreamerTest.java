@@ -15,7 +15,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(13));
+        assertThat(listPrenomStreamer.getSize(), is(19));
     }
     
     @Test
@@ -41,10 +41,21 @@ public class ListPrenomStreamerTest {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         
-        List<String> top3GirlNameIn2009 = listPrenomStreamer.top3GirlName2009();
+        List<String> top3GirlNameIn2009 = listPrenomStreamer.top3NameByGenderAndYear("F", 2009);
 
         // Then
         assertThat(top3GirlNameIn2009, contains("Alexia","Victoria","Eve"));
+    }
+
+    @Test
+    public void top_3_boy_name() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        
+        List<String> top3GirlNameIn2009 = listPrenomStreamer.top3NameByGenderAndYear("M", 2012);
+
+        // Then
+        assertThat(top3GirlNameIn2009, contains("Martin","Philippe","Jhon"));
     }
 
 }

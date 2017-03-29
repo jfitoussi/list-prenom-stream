@@ -51,9 +51,9 @@ public class ListPrenomStreamer {
     	return top5Prenoms2009to2016Stream.collect(Collectors.toList());
     }
 
-    public List<String> top3GirlName2009() {
+    public List<String> top3NameByGenderAndYear(String gender, int year) {
     	
-    	Predicate<Records> nameIn2009 = r -> r.getFields().getAnnee() == 2009 && r.getFields().getSexe().equals("F");
+    	Predicate<Records> nameIn2009 = r -> r.getFields().getAnnee() == year && r.getFields().getSexe().equals(gender);
     	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
     	
     	Stream<String> top3NameIn2009 = this.parisData.getRecords().stream().filter(nameIn2009).map(r -> r.getFields()).sorted(topOrder.reversed()).map(f -> f.getPrenoms()).limit(3);
