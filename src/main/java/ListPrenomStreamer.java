@@ -38,5 +38,11 @@ public class ListPrenomStreamer {
         Stream<String> top3Prenoms2010Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() == 2010).map(person -> person.getPrenoms()).limit(3);
         return top3Prenoms2010Stream.collect(Collectors.toList());
     }
+    
+    public List<String> top5name2009to2016(){
+    	Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
+    	Stream<String> top5Prenoms2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).limit(5);
+    	return top5Prenoms2009to2016Stream.collect(Collectors.toList());
+    }
 
 }
