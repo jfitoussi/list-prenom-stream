@@ -1,15 +1,12 @@
+import com.google.gson.Gson;
+import models.ParisData;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collector;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.function.Function;
-
-import com.google.gson.Gson;
-
-import com.sun.javafx.collections.MappingChange;
-import models.ParisData;
 
 public class ListPrenomStreamer {
 
@@ -27,7 +24,7 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3name2010());
         System.out.println(listPrenomStreamer.top3girlname2009());
         System.out.println(listPrenomStreamer.top3boyname2012());
-        System.out.println(listPrenomStreamer.top5bestname());
+        System.out.println(listPrenomStreamer.top5bestname2009_2016());
     }
 
     public int getSize() {
@@ -53,14 +50,23 @@ public class ListPrenomStreamer {
                 .map(records -> records.getFields().getPrenoms())
                 .collect(Collectors.toList());
     }
-    public List<String> top5bestname() {
-        List<Integer> annees = Arrays.asList(2010, 2011, 2012, 2013, 2014, 2015, 2016);
-        return parisData.getRecords().stream().filter(records -> annees.contains(records.getFields().getAnnee()))
-                .sorted((obj1, obj2) -> obj2.getFields().getNombre() - obj1.getFields().getNombre())
-                .limit(10)
-                .map(records -> records.getFields().getPrenoms())
-                .distinct()
+    public List<String> top5bestname2009_2016() {
+        Map<String, Integer> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms()!=null)
+                .filter(records -> records.getFields().getAnnee() >= 2009 &&  records.getFields().getAnnee() <= 2016 )
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())));
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        sum.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(5)
+                .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
+
+        List<String> resultat = result.entrySet().stream()
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+
+        return resultat;
     }
 
 }
