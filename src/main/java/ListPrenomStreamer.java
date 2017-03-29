@@ -1,9 +1,8 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import com.google.gson.Gson;
-
 import models.ParisData;
 
 public class ListPrenomStreamer {
@@ -18,16 +17,40 @@ public class ListPrenomStreamer {
 
     public static void main(String[] args) throws IOException {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        System.out.println(listPrenomStreamer.getSize());
-        System.out.println(listPrenomStreamer.top3name2008());
+
+        System.out.println("Size : " + listPrenomStreamer.getSize());
+        System.out.println("Top 3 name 2010 : " + listPrenomStreamer.top3name2010());
+        System.out.println("Top 3 name girls 2009 : " + listPrenomStreamer.top3NameGirl2009());
+        System.out.println("Top 3 name boys 2012 : " + listPrenomStreamer.top3NameBoys2012());
     }
 
     public int getSize() {
         return parisData.getRecords().size();
     }
 
-    public List<String> top3name2008() {
-        return null;
+    public List<String> top3name2010() {
+        return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2010)
+                .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
+                .limit(3)
+                .map(record -> record.getFields().getPrenoms())
+                .collect(Collectors.toList());
     }
 
+    public List<String> top3NameGirl2009() {
+        return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2009)
+                .filter(records -> records.getFields().getSexe().equals("F"))
+                .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
+                .limit(3)
+                .map(record -> record.getFields().getPrenoms())
+                .collect(Collectors.toList());
+    }
+
+    public List<String> top3NameBoys2012() {
+        return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2012)
+                .filter(records -> records.getFields().getSexe().equals("M"))
+                .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
+                .limit(3)
+                .map(record -> record.getFields().getPrenoms())
+                .collect(Collectors.toList());
+    }
 }
