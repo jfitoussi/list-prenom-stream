@@ -102,6 +102,18 @@ public class ListPrenomStreamerTest {
         // 350 - 240 - 100 - 100 - 100
     }
 
+    @Test
+    public void top_24_best_letters_from_2009_to_2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+
+        List<Character> top24 = listPrenomStreamer.top24_best_letters_from_2009_to_2016();
+        // Then
+        assertThat(top24.size(), is(24));
+        assertThat(top24, contains('A', 'M', 'L', 'E', 'C','S', 'J', 'N', 'R', 'G', 'I', 'T', 'H', 'V', 'P', 'B', 'Y', 'D', 'O', 'F', 'K', 'Z', 'W', 'É'));
+
+    }
+
     public void name_appear_just_in_2011() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");

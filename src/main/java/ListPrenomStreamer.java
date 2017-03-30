@@ -4,10 +4,7 @@ import models.Records;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
@@ -144,20 +141,27 @@ public class ListPrenomStreamer {
         return parisData.getRecords().stream()
                 .filter(records -> records.getFields().getPrenoms()!=null)
                 .collect(Collectors.groupingBy(t -> t.getFields().getAnnee(), Collectors.groupingBy(records -> records.getFields().getPrenoms().charAt(0), Collectors.summingInt(records -> records.getFields().getNombre()))));
-
-
     }
 
-    public List<String> top24_best_letters_from_2009_to_2016() {
+    public List<Character> top24_best_letters_from_2009_to_2016() {
 
-        return null;
+        Map<Character, Integer> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms() != null)
+                .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().charAt(0), Collectors.summingInt(records -> records.getFields().getNombre())));
+
+        return sum.entrySet().stream()
+                .sorted(Map.Entry.<Character, Integer>comparingByValue().reversed())
+                .limit(24)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
 
     }
 
     public List<String> top12WorstGirlName2016() {
         return parisData.getRecords().stream().filter(records -> records.getFields().getSexe().equals("F"))
                 .filter(records -> records.getFields().getAnnee() == 2016)
-                .sorted((obj1, obj2) -> obj1.getFields().getNombre() - obj2.getFields().getNombre())
+                .sorted(Comparator.comparingInt(t->t.getFields().getNombre()))
                 .limit(12)
                 .map(records -> records.getFields().getPrenoms())
                 .collect(Collectors.toList());
