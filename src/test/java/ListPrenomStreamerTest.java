@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.contains;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class ListPrenomStreamerTest {
 
@@ -80,6 +81,25 @@ public class ListPrenomStreamerTest {
         // Then
         assertThat(top3name.size(), is(10));
         assertThat(top3name, contains("Aaliyah", "Aaron", "Abby", "Abd", "Abdallah", "Abdel", "Abdelkader", "Abderrahmane", "Abdou", "Abdoul"));
+    }
+
+    @Test
+    public void TestTop5ofTheBestFirstLetterByYear() throws Exception {
+
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        Map Top5ofTheBestFirstLetterByYear = listPrenomStreamer.Top5ofTheBestFirstLetterByYear();
+
+        assertThat(Top5ofTheBestFirstLetterByYear.size(), is(1));
+    }
+
+    @Test
+    public void TestTop24ofBestLettersFrom2009To2016() throws Exception {
+
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        List<Character> Top24ofBestLettersFrom2009To2016 = listPrenomStreamer.Top24ofBestLettersFrom2009To2016();
+
+        assertThat(Top24ofBestLettersFrom2009To2016.size(), is(24));
+        assertThat(Top24ofBestLettersFrom2009To2016, contains('A', 'M', 'L', 'E', 'C', 'S', 'J', 'N', 'R', 'G', 'I', 'T', 'H', 'V', 'P', 'B', 'Y', 'D', 'O', 'F', 'K', 'Z', 'W', 'É'));
     }
 
 }
