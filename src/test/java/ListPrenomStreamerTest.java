@@ -4,12 +4,13 @@ import static org.junit.Assert.assertThat;
 
 import models.Records;
 import org.junit.Test;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.contains;
 public class ListPrenomStreamerTest {
+
 
     @Test
     public void size_should_be_10() throws Exception {
@@ -89,6 +90,18 @@ public class ListPrenomStreamerTest {
 
         List<String> nameList = listWorst10Girl.stream().map(getNameFunction).collect(Collectors.toList());
         assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Amelie", "Aisse", "Dior"));
+    }
+
+    @Test
+    public void allnamepresentfrom2009to2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("allnamepresentfrom2009to2016.json");
+
+        List<String> nameFrom2009to2016 = listPrenomStreamer.allnamepresentfrom2009to2016();
+        // Then
+        assertThat(nameFrom2009to2016.size(), is(10));
+        assertThat(nameFrom2009to2016, contains("Pauline","Coralie","Claire","Yani","Michel","Ting","Imane","Clément","Mouche","Marcel"));
+
     }
 
 }

@@ -24,6 +24,10 @@ public class ListPrenomStreamer {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3name2008());
+
+        ListPrenomStreamer listPrenomStreamer2 = new ListPrenomStreamer("liste_des_prenoms_2009_2016.json");
+        System.out.println(" \nAll names from 2009 to 2016 : ");
+        System.out.println(listPrenomStreamer2.allnamepresentfrom2009to2016());
     }
 
     public int getSize() {
@@ -99,4 +103,21 @@ public class ListPrenomStreamer {
         stream = stream.sorted(comparator).limit(12);
         return stream.collect(Collectors.toList());
     }
+
+    public List<String> allnamepresentfrom2009to2016() {
+
+        List<String> nameFrom2009to2016 = parisData.getRecords().stream()
+                .map(records -> records.getFields())
+                .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016)
+                .map(fields -> fields.getPrenoms())
+                .distinct().collect(Collectors.toList());
+        return nameFrom2009to2016;
+
+    }
+    //public List<String> namePresent2009and2016(){
+
+      //  Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee()>=2009 && records.getFields().getAnnee()<=2016));
+       // List<String> stream1=stream.map(records -> records.getFields().getPrenoms()).distinct().collect(Collectors.toList());
+        //return stream1;
+    //}
 }
