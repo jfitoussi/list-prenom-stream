@@ -3,10 +3,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ListPrenomStreamerTest {
 
@@ -91,8 +88,8 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2016_short.json");
         Map<String,Set<String>> mapGenderName = listPrenomStreamer.allNamesByGender();
 
-        assertThat(mapGenderName.get("F"),is(Arrays.asList("Alice","Louise","Emma")));
-        assertThat(mapGenderName.get("M"),is(Arrays.asList("Gabriel","Adam","Raphaël","Louis","Arthur","Paul","Alexandre")));
+        assertThat(mapGenderName.get("F"),is(new HashSet<>(Arrays.asList("Alice","Louise","Emma"))));
+        assertThat(mapGenderName.get("M"),is(new HashSet<>(Arrays.asList("Adam","Arthur","Alexandre","Raphaël","Gabriel","Paul","Louis"))));
     }
 
     @Test

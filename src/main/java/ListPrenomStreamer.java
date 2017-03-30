@@ -89,8 +89,8 @@ public class ListPrenomStreamer {
                                                         (records.getFields().getAnnee() <= 2016))
                                      .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms(), Collectors.summingInt(records -> records.getFields().getNombre())))
                                      .entrySet().stream()
-                                                .sorted(Comparator.comparingInt(value -> value.getValue()))
-                                                .limit(10).map(stringIntegerEntry -> stringIntegerEntry.getKey())
+                                                .sorted(Map.Entry.comparingByValue())
+                                                .limit(10).map(Map.Entry::getKey)
                                                 .collect(Collectors.toList());
 
     }
@@ -133,19 +133,19 @@ public class ListPrenomStreamer {
 
     }
 
-
     public Map<Integer, List<String>> top5BestFirstLetter(){
-        Map<Integer, List<Records>> recordByYear = parisData.getRecords().stream()
-                                     .filter(records -> records.getFields().getPrenoms() != null)
-                                     .collect(Collectors.groupingBy(t -> t.getFields().getAnnee()));
+        Map<Integer, List<Records>> recordByYear =
+                parisData.getRecords().stream()
+                                      .filter(records -> records.getFields().getPrenoms() != null)
+                                      .collect(Collectors.groupingBy(t -> t.getFields().getAnnee()));
         Map<Integer,List<String>> res = new HashMap<>();
         for (Integer oneYear : recordByYear.keySet()) {
-            List <String> fiveBest = recordByYear.get(oneYear).stream().collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().substring(0, 1),
+            List<String> fiveBest = recordByYear.get(oneYear).stream().collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().substring(0, 1),
                                                                                    Collectors.summingInt(t -> t.getFields().getNombre())))
                                                                  .entrySet().stream()
                                                                             .sorted((o1, o2) -> o2.getValue() - o1.getValue())
                                                                             .limit(5)
-                                                                            .map(characterIntegerEntry -> characterIntegerEntry.getKey())
+                                                                            .map(Map.Entry::getKey)
                                                                             .collect(Collectors.toList());
             res.put(oneYear,fiveBest);
         }
