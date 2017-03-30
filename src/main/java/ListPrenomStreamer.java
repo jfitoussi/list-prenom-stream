@@ -39,7 +39,7 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3NamesBoys2012());
         System.out.println("----------------------");
 
-        System.out.println("La liste des 5 meilleurs prenoms entre 2009 and 2016 : ");
+        System.out.println("La liste des 5 meilleurs prenoms entre 2009 et 2016 : ");
         System.out.println(listPrenomStreamer.top5Names2009to2016());
         System.out.println("----------------------");
 
@@ -61,6 +61,14 @@ public class ListPrenomStreamer {
 
         System.out.println("La liste des prenoms presents entre 2009 et 2016 : ");
         System.out.println(listPrenomStreamer.AllNamesPresentFrom2009To2016());
+        System.out.println("----------------------");
+
+        System.out.println("Les listes des 5 meilleures premieres lettres par année : ");
+        //System.out.println(listPrenomStreamer.);
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 24 meilleures lettres de 2009 à 2016 : ");
+        //System.out.println(listPrenomStreamer.);
         System.out.println("----------------------");
 
     }
@@ -150,7 +158,8 @@ public class ListPrenomStreamer {
 
         return parisData.getRecords().stream()
                 .map(Records::getFields)
-                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList()) ));
+                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
+        //Il faut un distinct sur les prenoms 
 
     }
 
@@ -178,11 +187,13 @@ public class ListPrenomStreamer {
                 .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016 && fields.getPrenoms()!= null)
                 .collect(Collectors.groupingBy(Fields::getAnnee, Collectors.mapping(Fields::getPrenoms, Collectors.toList()) ));
 
+        int howManyYear = mapByYear2009to2016.size();
+
         return parisData.getRecords().stream()
                 .map(Records::getFields)
                 .filter(f -> mapByYear2009to2016.keySet().stream()
                         .filter(integer -> mapByYear2009to2016.get(integer).contains(f.getPrenoms()))
-                        .count() == 8)
+                        .count() == howManyYear)
                 .map(Fields::getPrenoms)
                 .distinct()
                 .collect(Collectors.toList());
