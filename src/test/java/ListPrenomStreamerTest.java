@@ -102,4 +102,22 @@ public class ListPrenomStreamerTest {
         // 350 - 240 - 100 - 100 - 100
     }
 
+    @Test
+    public void top5_best_first_letter_by_year() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top5_best_first_letter.json");
+
+        Map<Integer, List<Character>> top5 = listPrenomStreamer.top5_of_best_first_letter_by_year();
+        // Then
+        assertThat(top5.get(2016).size(), is(5));
+        assertThat(top5.get(2010).size(), is(5));
+        assertThat(top5.get(2014).size(), is(5));
+        assertThat(top5.get(2015).size(), is(5));
+        assertThat(top5.get(2016), contains('C','A','p','c', 's'));
+        assertThat(top5.get(2010), contains('A','L','G','R', 'C'));
+        assertThat(top5.get(2014), contains('C','e','A','Y', 'L'));
+        assertThat(top5.get(2015), contains('A','L','G','R', 'P'));
+        // 350 - 240 - 100 - 100 - 100
+    }
+
 }
