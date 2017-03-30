@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -64,11 +65,11 @@ public class ListPrenomStreamer {
         System.out.println("----------------------");
 
         System.out.println("Les listes des 5 meilleures premieres lettres par année : ");
-        //System.out.println(listPrenomStreamer.);
+        System.out.println(listPrenomStreamer.listPrenomStreamer.Top5ofTheBestFirstLetterByYear());
         System.out.println("----------------------");
 
         System.out.println("La liste des 24 meilleures lettres de 2009 à 2016 : ");
-        //System.out.println(listPrenomStreamer.);
+        System.out.println(listPrenomStreamer.Top24ofBestLettersFrom2009To2016());
         System.out.println("----------------------");
 
     }
@@ -198,6 +199,38 @@ public class ListPrenomStreamer {
                 .distinct()
                 .collect(Collectors.toList());
 
+    }
+
+    public Map Top5ofTheBestFirstLetterByYear() {
+        Map<Integer, List<Character>> top5ofTheBestFirstLetterByYear = new HashMap<>();
+        Map<Integer, Map<Character, Integer>> firstCharOfPrenomsByYear =
+                parisData.getRecords().stream()
+                        .filter(records -> records.getFields().getPrenoms() != null)
+                        .collect(Collectors.groupingBy(r -> r.getFields().getAnnee(), Collectors.groupingBy(p -> p.getFields().getPrenoms().charAt(0), Collectors.summingInt(p -> p.getFields().getNombre()))));
+        for (Integer year : firstCharOfPrenomsByYear.keySet()) {
+            List<Character> top5 = firstCharOfPrenomsByYear.get(year).entrySet().stream()
+                    .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+                    .limit(5)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+            top5ofTheBestFirstLetterByYear.put(year, top5);
+        }
+        return top5ofTheBestFirstLetterByYear;
+    }
+
+    public List<Character> Top24ofBestLettersFrom2009To2016() {
+        Map<Character, Integer> prenomFrom2009To2016 = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getAnnee() >= 2009
+                        && records.getFields().getAnnee() <= 2016
+                        && records.getFields().getPrenoms() != null)
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().charAt(0),
+                        Collectors.summingInt(records -> records.getFields().getNombre())));
+
+        return prenomFrom2009To2016.entrySet().stream()
+                .sorted(Map.Entry.<Character, Integer>comparingByValue().reversed())
+                .limit(24)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
 }
