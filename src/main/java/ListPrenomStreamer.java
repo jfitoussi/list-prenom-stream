@@ -1,12 +1,16 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.List;
+import java.time.temporal.ChronoField;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 
+import com.sun.org.apache.regexp.internal.RE;
+import models.Fields;
 import models.ParisData;
 import models.Records;
 
@@ -24,6 +28,7 @@ public class ListPrenomStreamer {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3name2008());
+
     }
 
     public int getSize() {
@@ -78,15 +83,20 @@ public class ListPrenomStreamer {
         return stream2012.collect(Collectors.toList());
     }
 
-    public List<Records> worst10Name2009_2016() {
+    public List<String> worst10Name2009_2016() {
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return ((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
 
         Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016));
 
         stream = stream.sorted(comparator).limit(10);
-        return stream.collect(Collectors.toList());
+
+        List<Records> recordsList = stream.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
+
     }
 
     public List<Records> worst10GilName2016() {
@@ -98,5 +108,41 @@ public class ListPrenomStreamer {
 
         stream = stream.sorted(comparator).limit(12);
         return stream.collect(Collectors.toList());
+    }
+
+    public Map<Integer, Long> top5ofBestFirstLettersByYear(){
+
+        List<Records> recordsList = parisData.getRecords();
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Comparator<Records> comparatorPrenom = (Records r1, Records r2)-> {
+                return ((Character)r1.getFields().getPrenoms().charAt(0)).compareTo(r2.getFields().getPrenoms().charAt(0));
+        };
+
+
+        Map<Integer, List<Character>> result = new HashMap<>();
+
+
+
+        Stream<Records> streamRecords = parisData.getRecords().stream();
+        Stream<Records> streamRecords2 = parisData.getRecords().stream();
+//        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
+        // ok System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
+        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
+        // ok 2 System.out.println(streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
+        streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))).entrySet().stream().
+                sorted();
+        return null;
+        /*
+        Stream<Records> prenoms = recordsList.stream().sorted(comparatorPrenom);
+
+
+        Map<Integer, List<String>> ageDistribution =
+                recordsList.stream().collect(Collectors.groupingBy( , listPrenom));
+        //Map<Integer, Long> ageDistribution = recordsList.stream().sorted(comparator).collect(Collectors.groupingBy(Records::getAnnee, Collectors.counting()));
+
+
+
+        return ageDistribution;
+        */
     }
 }

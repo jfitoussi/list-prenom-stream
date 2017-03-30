@@ -6,6 +6,7 @@ import models.Records;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.contains;
@@ -71,13 +72,8 @@ public class ListPrenomStreamerTest {
     @Test
     public void worst_10_name_2009_2016(){
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
-        List<Records> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
-
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
-
-        List<String> nameList = listWorst10.stream().map(getNameFunction).collect(Collectors.toList());
-        //assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
-        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
+        List<String> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
+        assertThat(listWorst10, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
     }
 
     @Test
@@ -89,6 +85,15 @@ public class ListPrenomStreamerTest {
 
         List<String> nameList = listWorst10Girl.stream().map(getNameFunction).collect(Collectors.toList());
         assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Amelie", "Aisse", "Dior"));
+    }
+
+    @Test
+    public void top5ofBestFirstLettersByYear(){
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+
+        Map<Integer, Long> map =  listPrenomStreamer.top5ofBestFirstLettersByYear();
+
+        System.out.println(map);
     }
 
 }
