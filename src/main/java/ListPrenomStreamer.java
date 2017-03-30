@@ -61,6 +61,13 @@ public class ListPrenomStreamer {
     	Map<String,List<String>> genderMap = this.parisData.getRecords().stream().map(fields -> fields.getFields()).collect(Collectors.groupingBy(Fields::getSexe,Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
     	return genderMap;
     }
+    
+    public List<String> nameAppearIn2011(){
+    	List<String> notIn2011 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() != 2011).map( person -> person.getPrenoms()).collect(Collectors.toList());
+    	List<String> in2011 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter(person -> person.getAnnee() == 2011).map(person -> person.getPrenoms()).distinct().collect(Collectors.toList());
+    	List<String> justIn2011= in2011.stream().filter(person -> !notIn2011.contains(person)).collect(Collectors.toList());
+    	return justIn2011;
+    }
 
     public List<String> top3NameByGenderAndYear(String gender, int year) {
     	
