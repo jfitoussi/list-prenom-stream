@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.contains;
 import java.util.List;
 import java.util.Map;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 
@@ -92,9 +93,14 @@ public class ListPrenomStreamerTest {
     	// Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         Map<Integer, Map<String, Integer>> best5 = listPrenomStreamer.best5Letters();
-//        System.out.println(best5.get(2016).get("S"));
+
         // Then
-        assertThat(best5.get(2016).get("S"), is(2727));
+        assertThat(best5.get(2016).size(), Matchers.lessThan(6));
+        assertThat(best5.get(2016).keySet().toArray()[0], is("S"));//first in 2016
+        assertThat(best5.get(2016).keySet().toArray()[1], is("B"));//second etc...
+        assertThat(best5.get(2016).keySet().toArray()[2], is("A"));
+        assertThat(best5.get(2016).keySet().toArray()[3], is("R"));
+        assertThat(best5.get(2016).keySet().toArray()[4], is("V"));
     }
 
 
