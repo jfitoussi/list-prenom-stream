@@ -58,7 +58,19 @@ public class ListPrenomStreamerTest {
         // Then
         assertThat(top10.size(), is(10));
         assertThat(top10, contains("Kry","Lipton","Yanick","Andrew","christopher","christ","chris","eldii","Coralie","Tatane"));
-        // 2 - 3 - 20 - 20 - 50 - 52 - 100 - 100 - 240 -
+        // 2 - 3 - 20 - 20 - 50 - 100 - 100 - 100 - 240 -
+    }
+
+    @Test
+    public void top_5_best_name_2009_2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_5_prenoms_2009_a_2016.json");
+
+        List<String> top5 = listPrenomStreamer.top5bestname2009_2016();
+        // Then
+        assertThat(top5.size(), is(5));
+        assertThat(top5, contains("Adam","Tatane","Coralie","chris","eldii"));
+        // 350 - 240 - 100 - 100 - 100
     }
 
 }
