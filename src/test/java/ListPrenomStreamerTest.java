@@ -8,6 +8,8 @@ import java.util.Map;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import models.Fields;
+
 
 public class ListPrenomStreamerTest {
 
@@ -17,7 +19,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(28));
+        assertThat(listPrenomStreamer.getSize(), is(41));
     }
     
     @Test
@@ -26,7 +28,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<String> top32010 = listPrenomStreamer.top3name2010();
         // Then
-        assertThat(top32010, contains("Patrick", "Ben", "Gerard"));
+        assertThat(top32010, contains("Patrick", "Ben", "A"));
     }
     
     @Test
@@ -48,7 +50,7 @@ public class ListPrenomStreamerTest {
         List<String> top3GirlNameIn2009 = listPrenomStreamer.top3NameByGenderAndYear("M", 2012);
 
         // Then
-        assertThat(top3GirlNameIn2009, contains("Martin","Philippe","Jhon"));
+        assertThat(top3GirlNameIn2009, contains("Martin","A","Philippe"));
     }
     
     @Test
@@ -57,7 +59,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<String> top5name2009to2016 = listPrenomStreamer.top5name2009to2016();
         // Then
-        assertThat(top5name2009to2016, contains("Sandra93","Patrick", "Martin", "Ben", "Adam"));
+        assertThat(top5name2009to2016, contains("Sandra93","Patrick", "Baptiste", "Martin", "Ben"));
     }
     
     @Test
@@ -66,7 +68,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<String> top10WorstName2009to2016 = listPrenomStreamer.top10WorstName2009to2016();
         // Then
-        assertThat(top10WorstName2009to2016, contains("Alexandrine","Fatima","Angelique","Alexandra","Marine","Eve", "Jhon", "Ibrahim", "Ma�l", "Baptiste"));
+        assertThat(top10WorstName2009to2016, contains("Alexandrine","Fatima","Angelique","Alexandra","Marine","Patricia", "Tulipe", "Eve", "Jhon", "Ibrahim"));
     }
     
     @Test
@@ -82,10 +84,10 @@ public class ListPrenomStreamerTest {
     public void namesByGender() throws Exception {
     	// Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
-        Map<String,List<String>> genderNamesMap = listPrenomStreamer.namesByGenre();
+        Map<String,Map<String,List<Fields>>> genderNamesMap = listPrenomStreamer.namesByGenre();
         // Then
-        assertThat(genderNamesMap.get("M").size(), is(17));
-        assertThat(genderNamesMap.get("F").size(), is(19));
+        assertThat(genderNamesMap.get("M").size(), is(18));
+        assertThat(genderNamesMap.get("F").size(), is(13));
     }
     
     @Test

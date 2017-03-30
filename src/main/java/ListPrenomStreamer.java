@@ -75,7 +75,7 @@ public class ListPrenomStreamer {
 
 	public List<String> top5name2009to2016(){
 		Comparator<Fields> topOrder = (Fields c1, Fields c2) ->  Integer.compare(c1.getNombre(), c2.getNombre());
-		Stream<String> top5Prenoms2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).limit(5);
+		Stream<String> top5Prenoms2009to2016Stream = this.parisData.getRecords().stream().map(fields -> fields.getFields()).sorted(topOrder.reversed()).filter(field -> field.getAnnee() > 2008 && field.getAnnee() < 2017).map(person -> person.getPrenoms()).distinct().limit(5);
 		return top5Prenoms2009to2016Stream.collect(Collectors.toList());
 	}
 
@@ -91,8 +91,8 @@ public class ListPrenomStreamer {
 		return top12WorstGirl2016Stream.collect(Collectors.toList());
 	}
 
-	public Map<String,List<String>> namesByGenre(){
-		Map<String,List<String>> genderMap = this.parisData.getRecords().stream().map(fields -> fields.getFields()).collect(Collectors.groupingBy(Fields::getSexe,Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
+	public Map<String,Map<String,List<Fields>>> namesByGenre(){
+		Map<String,Map<String,List<Fields>>> genderMap = this.parisData.getRecords().stream().map(fields -> fields.getFields()).collect(Collectors.groupingBy(Fields::getSexe,Collectors.groupingBy(Fields::getPrenoms, Collectors.toList())));
 		return genderMap;
 	}
 
