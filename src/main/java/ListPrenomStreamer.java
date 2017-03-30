@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 public class ListPrenomStreamer {
 
@@ -19,7 +22,7 @@ public class ListPrenomStreamer {
     }
 
     public static void main(String[] args) throws IOException {
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("all_name_by_gender.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3name2010());
         System.out.println(listPrenomStreamer.top3girlname2009());
@@ -81,11 +84,11 @@ public class ListPrenomStreamer {
 
     }
 
-    public Map<String, List<String>> allnamebygender() {
+    public Map<String, Set<String>> allnamebygender() {
 
         return parisData.getRecords().stream()
                 .collect(Collectors.groupingBy(records -> records.getFields().getSexe(), Collectors.mapping(records
-                        ->records.getFields().getPrenoms(), Collectors.toList())));
+                        ->records.getFields().getPrenoms(), Collectors.toSet())));
 
     }
 

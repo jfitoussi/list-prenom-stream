@@ -3,6 +3,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -79,14 +80,14 @@ public class ListPrenomStreamerTest {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("all_name_by_gender.json");
 
-        Map<String, List<String>> allnamebygender = listPrenomStreamer.allnamebygender();
+        Map<String, Set<String>> allnamebygender = listPrenomStreamer.allnamebygender();
         // Then
-        assertThat(allnamebygender.get("F").size(), is(5));
-        assertThat(allnamebygender.get("M").size(), is(5));
-        assertThat(allnamebygender.get("X").size(), is(5));
-        assertThat(allnamebygender.get("F"), contains("Adam","Tatane","Coralie","chris","eldii"));
-        assertThat(allnamebygender.get("M"), contains("Adam","Tatane","Coralie","chris","eldii"));
-        assertThat(allnamebygender.get("X"), contains("Adam","Tatane","Coralie","chris","eldii"));
+        assertThat(allnamebygender.get("F").size(), is(1));
+        assertThat(allnamebygender.get("M").size(), is(13));
+        assertThat(allnamebygender.get("X").size(), is(4));
+        assertThat(allnamebygender.get("F"), contains("Coralie"));
+        assertThat(allnamebygender.get("X"), contains("Ely","Dominique","Paris","Noha"));
+        assertThat(allnamebygender.get("M"), contains("Yanick","christ","Andrew","Yani","Lipton", "Adam", "Lip", "Kry", "chris", "Tatane", "Florian", "eldii", "christopher"));
     }
 
     @Test
