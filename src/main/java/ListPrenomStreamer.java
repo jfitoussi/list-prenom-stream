@@ -114,17 +114,17 @@ public class ListPrenomStreamer {
                                 )
                         ));
         for(Entry<Integer, Map<String,Integer>> mapNames : namesByYear.entrySet()){
-            namesByYear.put(mapNames.getKey(), sortByValue(namesByYear.get(mapNames.getKey())));
+            namesByYear.put(mapNames.getKey(), sortByValue(namesByYear.get(mapNames.getKey()), 5));
         }
         
 //        System.out.println("letters by year " + namesByYear);
         return namesByYear;
     }
 
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, int limit) {
         return map.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).limit(5)
+                .sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).limit(limit)
                 .collect(Collectors.toMap(
                         Map.Entry::getKey, 
                         Map.Entry::getValue, 
@@ -133,5 +133,23 @@ public class ListPrenomStreamer {
                         ));
 
     }
+    
+
+	public Map<String, Integer> top24LetterInRange(int yearFrom, int yearTo) {
+
+		Predicate<Fields> letterInRange = f -> f.getAnnee() >= yearFrom && f.getAnnee() <= yearTo;
+
+		Map<String, Integer> top24LetterInRange = this.parisData.getRecords().stream()
+				.map(r -> r.getFields())
+				.filter(letterInRange)
+				.limit(24)
+				.collect(Collectors.groupingBy(p -> p.getPrenoms().charAt(0) + "", Collectors.summingInt(p -> p.getNombre())));
+		
+		top24LetterInRange = sortByValue(top24LetterInRange, 24);
+		
+//		System.out.println("top24 " + top24LetterInRange);
+
+		return top24LetterInRange;
+	}
 
 }

@@ -114,4 +114,18 @@ public class ListPrenomStreamerTest {
         assertThat(nameAppearFrom2009To2016, contains("A"));
     }
 
+    @Test
+    public void top24InFrom2009to2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        Map<String, Integer> nameAppearFrom2009To2016 = listPrenomStreamer.top24LetterInRange(2009, 2016);
+        // Then
+        assertThat(nameAppearFrom2009To2016.size(), Matchers.lessThan(24));
+        assertThat(nameAppearFrom2009To2016.keySet().toArray()[0], is("P"));//first in 2016
+        assertThat(nameAppearFrom2009To2016.keySet().toArray()[1], is("A"));//second etc...
+        assertThat(nameAppearFrom2009To2016.keySet().toArray()[2], is("S"));
+        assertThat(nameAppearFrom2009To2016.keySet().toArray()[3], is("B"));
+        assertThat(nameAppearFrom2009To2016.keySet().toArray()[4], is("R"));
+    }
+
 }
