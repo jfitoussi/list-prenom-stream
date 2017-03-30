@@ -40,47 +40,70 @@ public class ListPrenomStreamer {
         return null;
     }
 
-    public List<Records> top3name2010() {
+    public List<String> top3name2010() {
 
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return -((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+
         Stream<Records> stream2010 = parisData.getRecords().stream().filter(records -> records.getFields().getAnnee() == 2010);
 
         stream2010 = stream2010.sorted(comparator).limit(3);
-        return stream2010.collect(Collectors.toList());
+       
+        List<Records> recordsList = stream2010.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
     }
 
-    public List<Records> top3GirlName2009() {
+    public List<String> top3GirlName2009() {
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return -((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+
         Stream<Records> stream2009 = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() == 2009 && records.getFields().getSexe().equals("F")));
 
         stream2009 = stream2009.sorted(comparator).limit(3);
-        return stream2009.collect(Collectors.toList());
+        
+        List<Records> recordsList = stream2009.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
     }
 
-    public List<Records> top3MenName2012() {
+    public List<String> top3MenName2012() {
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return -((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+
         Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() == 2012 && records.getFields().getSexe().equals("M")));
 
         stream = stream.sorted(comparator).limit(3);
-        return stream.collect(Collectors.toList());
+        
+        List<Records> recordsList = stream.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
 
     }
 
-    public List<Records> top5Name2009_2016() {
+    public List<String> top5Name2009_2016() {
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return -((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
 
         Stream<Records> stream2012 = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016));
 
         stream2012 = stream2012.sorted(comparator).limit(5);
-        return stream2012.collect(Collectors.toList());
+        
+        List<Records> recordsList = stream2012.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
     }
 
     public List<String> worst10Name2009_2016() {
@@ -99,15 +122,18 @@ public class ListPrenomStreamer {
 
     }
 
-    public List<Records> worst10GilName2016() {
+    public List<String> worst10GilName2016() {
         Comparator<Records> comparator = (Records r1, Records r2)-> {
             return ((Integer)r1.getFields().getNombre()).compareTo(r2.getFields().getNombre());
         };
-
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        
         Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() == 2016 && records.getFields().getSexe().equals("F")));
 
         stream = stream.sorted(comparator).limit(12);
-        return stream.collect(Collectors.toList());
+        List<Records> recordsList = stream.collect(Collectors.toList());
+        List<String> nameList = recordsList.stream().map(getNameFunction).collect(Collectors.toList());
+        return nameList;
     }
 
     public Map<Integer, Long> top5ofBestFirstLettersByYear(){
