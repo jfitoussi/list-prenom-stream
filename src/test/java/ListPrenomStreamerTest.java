@@ -1,5 +1,6 @@
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import models.Records;
@@ -56,8 +57,13 @@ public class ListPrenomStreamerTest {
     @Test
     public void worst_10_name_2009_2016(){
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
-        List<String> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
-        assertThat(listWorst10, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
+        List<Records> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
+
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+
+        List<String> nameList = listWorst10.stream().map(getNameFunction).collect(Collectors.toList());
+        //assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
+        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
     }
 
     @Test
@@ -68,12 +74,37 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
+    public void allnamepresentfrom2009to2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("allnamepresentfrom2009to2016.json");
+
+        List<String> nameFrom2009to2016 = listPrenomStreamer.allnamepresentfrom2009to2016();
+        // Then
+        assertThat(nameFrom2009to2016.size(), is(10));
+        assertThat(nameFrom2009to2016, contains("Pauline","Coralie","Claire","Yani","Michel","Ting","Imane","Clément","Mouche","Marcel"));
+
+    }
+
+    @Test
     public void top5ofBestFirstLettersByYear(){
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         Map<Integer, Long> map =  listPrenomStreamer.top5ofBestFirstLettersByYear();
 
         System.out.println(map);
+    }
+
+    @Test
+    public  void TestApi(){
+        try {
+            String res_api = ListPrenomStreamer.sendGet();
+            ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(res_api,0);
+            System.out.println(res_api);
+            System.out.println(listPrenomStreamer.getParisData().getRecords().size());
+            assertEquals(listPrenomStreamer.getSize(), 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
