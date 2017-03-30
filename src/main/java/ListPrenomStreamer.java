@@ -65,7 +65,7 @@ public class ListPrenomStreamer {
         System.out.println("----------------------");
 
         System.out.println("Les listes des 5 meilleures premieres lettres par année : ");
-        System.out.println(listPrenomStreamer.listPrenomStreamer.Top5ofTheBestFirstLetterByYear());
+        System.out.println(listPrenomStreamer.Top5ofTheBestFirstLetterByYear());
         System.out.println("----------------------");
 
         System.out.println("La liste des 24 meilleures lettres de 2009 à 2016 : ");

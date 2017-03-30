@@ -65,17 +65,6 @@ public class ListPrenomStreamerTest {
         assertThat(top3name, contains("Gabriel", "Adam", "Louise", "Raphaël", "Arthur"));
     }
 
-    /*@Test
-    public void top5NamesBetween2009To2016() throws Exception {
-        // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
-        List<String> top3name = listPrenomStreamer.top5Names2009to2016();
-
-        // Then
-        assertThat(top3name.size(), is(5));
-        assertThat(top3name, contains("Gabriel", "Adam", "Louise", "Raphaël", "Arthur"));
-    }*/
-
     @Test
     public void TestAllNamesPresentFrom2009To2016() throws Exception {
 
@@ -102,7 +91,7 @@ public class ListPrenomStreamerTest {
     @Test
     public void TestTop5ofTheBestFirstLetterByYear() throws Exception {
 
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         Map Top5ofTheBestFirstLetterByYear = listPrenomStreamer.Top5ofTheBestFirstLetterByYear();
 
         assertThat(Top5ofTheBestFirstLetterByYear.size(), is(1));
@@ -111,7 +100,7 @@ public class ListPrenomStreamerTest {
     @Test
     public void TestTop24ofBestLettersFrom2009To2016() throws Exception {
 
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<Character> Top24ofBestLettersFrom2009To2016 = listPrenomStreamer.Top24ofBestLettersFrom2009To2016();
 
         assertThat(Top24ofBestLettersFrom2009To2016.size(), is(24));
