@@ -1,12 +1,10 @@
 import com.google.gson.Gson;
 import models.ParisData;
+import models.Records;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListPrenomStreamer {
@@ -26,7 +24,8 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3NameGirl2009());
         System.out.println(listPrenomStreamer.top10WorstName2009To2016());
         System.out.println(listPrenomStreamer.top12WorstGirlName2016());
-        System.out.println(listPrenomStreamer.allNamesByGender().get("M"));
+        System.out.println(listPrenomStreamer.allNamesByGender().get("M").size());
+        System.out.println(listPrenomStreamer.top5BestFirstLetter());
 
     }
 
@@ -77,13 +76,35 @@ public class ListPrenomStreamer {
 
 
     // All names by gender
-    public Map<String,List<String>> allNamesByGender(){
+    public Map<String,Set<String>> allNamesByGender(){
         return parisData.getRecords().stream()
                                      .collect(
                                              Collectors.groupingBy(t -> t.getFields().getSexe(),
                                                                    Collectors.mapping(t -> t.getFields().getPrenoms(),
-                                                                                      Collectors.toList())));
+                                                                                      Collectors.toSet())));
 
     }
+
+
+    public Map<Integer, List<Character>> top5BestFirstLetter(){
+        Map<Integer, List<Records>> recordByYear = parisData.getRecords().stream()
+                                     .filter(records -> records.getFields().getPrenoms() != null)
+                                     .collect(Collectors.groupingBy(t -> t.getFields().getAnnee()));
+        Map<Integer,List<Character>> res = new HashMap<>();
+        for (Integer oneYear : recordByYear.keySet()) {
+            List <Character> fiveBest = recordByYear.get(oneYear).stream().collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().charAt(0),
+                                                                                   Collectors.summingInt(t -> t.getFields().getNombre())))
+                                                                 .entrySet().stream()
+                                                                            .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+                                                                            .limit(5)
+                                                                            .map(characterIntegerEntry -> characterIntegerEntry.getKey())
+                                                                            .collect(Collectors.toList());
+            res.put(oneYear,fiveBest);
+        }
+
+        return res;
+    }
+
+
 
 }

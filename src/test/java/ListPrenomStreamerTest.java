@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ListPrenomStreamerTest {
 
@@ -69,7 +70,7 @@ public class ListPrenomStreamerTest {
     @Test
     public void sort_By_Gender() throws Exception{
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2016_short.json");
-        Map<String,List<String>> mapGenderName = listPrenomStreamer.allNamesByGender();
+        Map<String,Set<String>> mapGenderName = listPrenomStreamer.allNamesByGender();
 
         assertThat(mapGenderName.get("F"),is(Arrays.asList("Louise","Emma","Alice")));
         assertThat(mapGenderName.get("M"),is(Arrays.asList("Gabriel","Adam","Raphaël","Louis","Arthur","Paul","Alexandre")));
