@@ -28,6 +28,7 @@ public class ListPrenomStreamer {
         System.out.println("Top 3 names girls 2009 : " + listPrenomStreamer.top3NamesGirl2009());
         System.out.println("Top 3 names boys 2012 : " + listPrenomStreamer.top3NamesBoys2012());
         System.out.println("Top 5 names between 2009 and 2016: " + listPrenomStreamer.top5Names2009to2016());
+        System.out.println("Top 10 worst names between 2009 and 2016: " + listPrenomStreamer.top10WorstNames2009to2016());
         System.out.println("All names present from 2009 to 2016 :" + "(Size -> " + listPrenomStreamer.AllNamesPresentFrom2009To2016().size() + ")" + listPrenomStreamer.AllNamesPresentFrom2009To2016());
     }
 
@@ -81,4 +82,22 @@ public class ListPrenomStreamer {
                 .collect(Collectors.toList());
         return AllNamesPresentFrom2009To2016;
     }
+
+    public List<String> top10WorstNames2009to2016() {
+        Comparator<Fields> topOrder = Comparator.comparingInt(Fields::getNombre);
+        Stream<String> top10WorstName2009to2016Stream = parisData.getRecords()
+                .stream()
+                .map(Records::getFields)
+                .filter(field -> null != field.getPrenoms())
+                .sorted(topOrder)
+                .filter(field -> field.getAnnee() >= 2009 && field.getAnnee() <= 2016)
+                .map(Fields::getPrenoms)
+                .distinct()
+                .sorted()
+                .limit(10);
+
+        return top10WorstName2009to2016Stream.collect(Collectors.toList());
+    }
+
+
 }
