@@ -21,12 +21,14 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top_3_best_2010(){
+    public void top_3_best_2010() {
 
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listTop3_2010 = listPrenomStreamer.top3name2010();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listTop3_2010.stream().map(getNameFunction).collect(Collectors.toList());
         assertThat(nameList, containsInAnyOrder("Abraham", "Harouna", "Ismael"));
@@ -34,61 +36,71 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top_3_best_girl_2009(){
+    public void top_3_best_girl_2009() {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listTop3Girl_2009 = listPrenomStreamer.top3GirlName2009();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listTop3Girl_2009.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Imane", "Islem", "Pauline"));
+        assertThat(nameList, containsInAnyOrder("Imane", "Islem", "Pauline"));
 
     }
 
     @Test
-    public void top_3_best_men_2012(){
+    public void top_3_best_men_2012() {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listTop3Men_2012 = listPrenomStreamer.top3MenName2012();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listTop3Men_2012.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Kevin", "Ismo", "Flo"));
+        assertThat(nameList, containsInAnyOrder("Kevin", "Ismo", "Flo"));
 
     }
 
     @Test
-    public void top_5_best_name_2009_2016(){
+    public void top_5_best_name_2009_2016() {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listTop5 = listPrenomStreamer.top5Name2009_2016();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listTop5.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Adam", "Alexandre", "Victor", "Liam", "Ethan"));
+        assertThat(nameList, containsInAnyOrder("Adam", "Alexandre", "Victor", "Liam", "Ethan"));
     }
 
     @Test
-    public void worst_10_name_2009_2016(){
+    public void worst_10_name_2009_2016() {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listWorst10 = listPrenomStreamer.worst10Name2009_2016();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listWorst10.stream().map(getNameFunction).collect(Collectors.toList());
         //assertThat(nameList, containsInAnyOrder( "Dom", "Juan", "Ibrahim", "Harouna", "Ismael", "Sophie", "Ismo", "Flo", "Mauoobl", "Abraham"));
-        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
+        assertThat(nameList, containsInAnyOrder("Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Dom"));
     }
 
     @Test
-    public void worst_10_name_2016(){
+    public void worst_10_name_2016() {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         List<Records> listWorst10Girl = listPrenomStreamer.worst10GilName2016();
 
-        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Function<Records, String> getNameFunction = records -> {
+            return records.getFields().getPrenoms();
+        };
 
         List<String> nameList = listWorst10Girl.stream().map(getNameFunction).collect(Collectors.toList());
-        assertThat(nameList, containsInAnyOrder( "Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Amelie", "Aisse", "Dior"));
+        assertThat(nameList, containsInAnyOrder("Assa", "Vanina", "Laure", "Marianne", "Candice", "Eva", "Aissatou", "Aurelie", "Aline", "Amelie", "Aisse", "Dior"));
     }
 
 }
