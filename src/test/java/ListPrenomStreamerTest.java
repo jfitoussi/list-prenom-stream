@@ -2,6 +2,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -71,6 +72,21 @@ public class ListPrenomStreamerTest {
         assertThat(top5.size(), is(5));
         assertThat(top5, contains("Adam","Tatane","Coralie","chris","eldii"));
         // 350 - 240 - 100 - 100 - 100
+    }
+
+    @Test
+    public void all_name_by_gender() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("all_name_by_gender.json");
+
+        Map<String, List<String>> allnamebygender = listPrenomStreamer.allnamebygender();
+        // Then
+        assertThat(allnamebygender.get("F").size(), is(5));
+        assertThat(allnamebygender.get("M").size(), is(5));
+        assertThat(allnamebygender.get("X").size(), is(5));
+        assertThat(allnamebygender.get("F"), contains("Adam","Tatane","Coralie","chris","eldii"));
+        assertThat(allnamebygender.get("M"), contains("Adam","Tatane","Coralie","chris","eldii"));
+        assertThat(allnamebygender.get("X"), contains("Adam","Tatane","Coralie","chris","eldii"));
     }
 
 }

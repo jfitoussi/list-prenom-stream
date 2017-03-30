@@ -19,13 +19,14 @@ public class ListPrenomStreamer {
     }
 
     public static void main(String[] args) throws IOException {
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("all_name_by_gender.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3name2010());
         System.out.println(listPrenomStreamer.top3girlname2009());
         System.out.println(listPrenomStreamer.top3boyname2012());
         System.out.println(listPrenomStreamer.top5bestname2009_2016());
         System.out.println(listPrenomStreamer.top10worstname2009_2016());
+        System.out.println(listPrenomStreamer.allnamebygender());
     }
 
     public int getSize() {
@@ -75,6 +76,14 @@ public class ListPrenomStreamer {
                 .limit(10)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+
+    }
+
+    public Map<String, List<String>> allnamebygender() {
+
+        return parisData.getRecords().stream()
+                .collect(Collectors.groupingBy(records -> records.getFields().getSexe(), Collectors.mapping(records
+                        ->records.getFields().getPrenoms(), Collectors.toList())));
 
     }
 
