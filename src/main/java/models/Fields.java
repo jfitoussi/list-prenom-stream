@@ -29,4 +29,15 @@ public class Fields {
         this.prenoms = prenoms;
         this.sexe = sexe;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Fields
+                && ((Fields) obj).nombre == this.nombre
+                && ((Fields) obj).annee == this.annee
+                && ((Fields) obj).prenoms.equals(this.prenoms)
+                && ((Fields) obj).sexe.equals(this.sexe);
+
+
+    }
 }

@@ -129,35 +129,37 @@ public class ListPrenomStreamerTest {
             assertThat(result.get(i), contains('A', 'B', 'C', 'D', 'E'));
         }
     }
-//    @Test
-//    public void top24BestLettersTest() throws Exception {
-//        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_24_best_letters.json");
-//
-//        assertThat(listPrenomStreamer.top24BestLetters(), contains(
-//                "A",
-//                "B",
-//                "C",
-//                "D",
-//                "E",
-//                "F",
-//                "G",
-//                "H",
-//                "I",
-//                "J",
-//                "K",
-//                "L",
-//                "M",
-//                "N",
-//                "O",
-//                "P",
-//                "Q",
-//                "R",
-//                "S",
-//                "T",
-//                "U",
-//                "V",
-//                "W",
-//                "X"
-//        ));
-//    }
+    @Test
+    public void top24BestLettersTest() throws Exception {
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_24_best_letters.json");
+
+        List<Character> list = listPrenomStreamer.top24BestLetters2009To2016();
+        assertTrue(list.get(0).equals('A') || list.get(0).equals('L'));
+        assertTrue(list.get(1).equals('A') || list.get(1).equals('L'));
+        assertTrue(list.get(2).equals('E'));
+        List<Character> sublist = list.subList(3,list.size());
+        assertThat(sublist, containsInAnyOrder(
+                'B',
+                'C',
+                'D',
+                'F',
+                'G',
+                'H',
+                'I',
+                'J',
+                'K',
+                'M',
+                'N',
+                'O',
+                'P',
+                'Q',
+                'R',
+                'S',
+                'T',
+                'U',
+                'V',
+                'X',
+                'Y'
+        ));
+    }
 }

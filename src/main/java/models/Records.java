@@ -11,4 +11,9 @@ public class Records {
     private Records(Fields fields) {
         this.fields = fields;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Records && ((Records) obj).fields == this.fields;
+    }
 }

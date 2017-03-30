@@ -17,15 +17,25 @@ public class ListPrenomStreamer {
     private ParisData parisData;
 
     public ListPrenomStreamer(String filename) {
-        InputStreamReader inputStreamReader = new InputStreamReader(getClass().getResourceAsStream(filename));
-        this.parisData = GSON.fromJson(inputStreamReader, ParisData.class);
+//        InputStreamReader inputStreamReader = new InputStreamReader(getClass().getResourceAsStream(filename));
+//        this.parisData = GSON.fromJson(inputStreamReader, ParisData.class);
+//        this.parisData =  new SimpleApiCaller().get();
+        this.parisData =  new ComplexApiCaller().get();
     }
 
     public static void main(String[] args) throws IOException {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         System.out.println(listPrenomStreamer.getSize());
         System.out.println(listPrenomStreamer.top3Name2010());
+        System.out.println(listPrenomStreamer.top3GirlsName2009());
+        System.out.println(listPrenomStreamer.top5Name2009To2016());
+        System.out.println(listPrenomStreamer.top10Worst2009To2016());
+        System.out.println(listPrenomStreamer.top12WorstGirls2016());
+        System.out.println(listPrenomStreamer.allNamesByGender());
+        System.out.println(listPrenomStreamer.namesOnlyIn2011());
         System.out.println(listPrenomStreamer.allNamesPresent2009To2016());
+        System.out.println(listPrenomStreamer.top5BestFirstLetterByYear());
+        System.out.println(listPrenomStreamer.top24BestLetters2009To2016());
     }
 
     public int getSize() {
@@ -67,11 +77,10 @@ public class ListPrenomStreamer {
             map.put(k,value);
             return new Pair<>(k,value);
         };
-        Comparator<Pair<String, Integer>> comp = (pair1, pair2) -> pair2.last - pair1.last;
         return parisData.getRecords().stream()
                 .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
                 .map(addValue)
-                .sorted(comp)
+                .sorted((pair1, pair2) -> pair2.last - pair1.last)
                 .map(pair -> pair.first)
                 .distinct()
                 .limit(5)
@@ -79,11 +88,18 @@ public class ListPrenomStreamer {
     }
 
     public List<String> top10Worst2009To2016() {
+        Map<String,Integer> map = new HashMap<>();
+        Function<Records, Pair<String, Integer>> addValue = r -> {
+            String k = r.getFields().getPrenoms();
+            Integer value = map.getOrDefault(k, 0) + r.getFields().getNombre();
+            map.put(k,value);
+            return new Pair<>(k,value);
+        };
         return parisData.getRecords().stream()
-                .filter(records -> records.getFields().getAnnee() >= 2009)
-                .filter(records -> records.getFields().getAnnee() <= 2016)
-                .sorted(Comparator.comparingInt(field -> field.getFields().getNombre()))
-                .map(records -> records.getFields().getPrenoms())
+                .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
+                .map(addValue)
+                .sorted(Comparator.comparingInt(pair2 -> pair2.last))
+                .map(pair -> pair.first)
                 .distinct()
                 .limit(10)
                 .collect(Collectors.toList());
@@ -118,6 +134,9 @@ public class ListPrenomStreamer {
                 }
                 @Override
                 public int hashCode() {
+                    if(this.last == null) {
+                        return 0;
+                    }
                     return this.last.hashCode();
                 }
             };
@@ -152,14 +171,26 @@ public class ListPrenomStreamer {
         List<Integer> annees = new ArrayList<>();
         Function<Records, Pair<Integer,Pair<Character,Integer>>> toTuple = r -> {
             int annee = r.getFields().getAnnee();
-            char c = r.getFields().getPrenoms().charAt(0);
+            char c = r.getFields().getPrenoms() != null ? r.getFields().getPrenoms().charAt(0) : '.';
             int nb = r.getFields().getNombre();
             Pair<Character,Integer> pair = new Pair<>(c,nb);
             pair.last += r.getFields().getNombre();
             if (!annees.contains(annee)) {
                 annees.add(annee);
             }
-            return new Pair<>(annee,pair);
+            return new Pair<Integer,Pair<Character,Integer>>(annee,pair) {
+                @Override
+                public boolean equals(Object obj) {
+                    return obj instanceof Pair;
+                }
+                @Override
+                public int hashCode() {
+                    if(this.last.first == null) {
+                        return 0;
+                    }
+                    return this.last.first.hashCode();
+                }
+            };
         };
         Map<Integer, List<Character>> result = new HashMap<>();
         List<Pair<Integer,Pair<Character,Integer>>> pairs = parisData.getRecords().stream()
@@ -169,6 +200,7 @@ public class ListPrenomStreamer {
         for (int annee : annees) {
             pairs.stream()
                     .filter(pairPair -> pairPair.first == annee)
+                    .distinct()
                     .limit(5)
                     .forEach(pairPair -> {
                         int year = pairPair.first;
@@ -180,5 +212,24 @@ public class ListPrenomStreamer {
                     });
         }
         return result;
+    }
+
+    public List<Character> top24BestLetters2009To2016() {
+        Map<Character,Integer> map = new HashMap<>();
+        parisData.getRecords().stream()
+                .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
+                .forEach(r -> {
+                    String nom = r.getFields().getPrenoms() != null ? r.getFields().getPrenoms() : "";
+                    for (char c : nom.toCharArray()) {
+                        char cUpperCase = Character.toUpperCase(c);
+                        int val = map.getOrDefault(cUpperCase, 0) + r.getFields().getNombre();
+                        map.put(cUpperCase, val);
+                    }
+                });
+        return map.entrySet().stream()
+                .sorted((set1,set2) -> set2.getValue() - set1.getValue())
+                .limit(24)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }
