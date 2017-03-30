@@ -58,7 +58,11 @@ public class ListPrenomStreamer {
     }
     
     public Map<String,List<String>> namesByGenre(){
-    	Map<String,List<String>> genderMap = this.parisData.getRecords().stream().map(fields -> fields.getFields()).collect(Collectors.groupingBy(Fields::getSexe,Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
+    	Map<String,List<String>> genderMap = this.parisData
+                                                    .getRecords()
+                                                    .stream()
+                                                    .map(fields -> fields.getFields())
+                                                    .collect(Collectors.groupingBy(Fields::getSexe,Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
     	return genderMap;
     }
     
@@ -67,6 +71,25 @@ public class ListPrenomStreamer {
     	List<String> in2011 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter(person -> person.getAnnee() == 2011).map(person -> person.getPrenoms()).distinct().collect(Collectors.toList());
     	List<String> justIn2011= in2011.stream().filter(person -> !notIn2011.contains(person)).collect(Collectors.toList());
     	return justIn2011;
+    }
+
+    public List<String> nameAppearFrom2009To2016(){
+        List<String> in2009 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2009).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2010 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2010).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2011 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2011).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2012 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2012).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2013 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2013).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2014 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2014).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2015 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2015).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> in2016 = this.parisData.getRecords().stream().map(fields -> fields.getFields()).filter( person -> person.getAnnee() == 2016).map( person -> person.getPrenoms()).collect(Collectors.toList());
+        List<String> nameAppearsFrom2009To2016= in2009.stream().filter(person ->   in2010.contains(person) &&
+                                                                    in2011.contains(person) &&
+                                                                    in2012.contains(person) &&
+                                                                    in2013.contains(person) &&
+                                                                    in2014.contains(person) &&
+                                                                    in2015.contains(person) &&
+                                                                    in2016.contains(person) ).collect(Collectors.toList());
+        return nameAppearsFrom2009To2016;
     }
 
     public List<String> top3NameByGenderAndYear(String gender, int year) {
