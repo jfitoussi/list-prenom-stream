@@ -26,6 +26,8 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3boyname2012());
         System.out.println(listPrenomStreamer.top5bestname2009_2016());
         System.out.println(listPrenomStreamer.top10worstname2009_2016());
+        System.out.println(listPrenomStreamer.top12WorstGirlName2016());
+
         System.out.println(listPrenomStreamer.allnamebygender());
     }
 
@@ -85,6 +87,15 @@ public class ListPrenomStreamer {
                 .collect(Collectors.groupingBy(records -> records.getFields().getSexe(), Collectors.mapping(records
                         ->records.getFields().getPrenoms(), Collectors.toList())));
 
+    }
+
+    public List<String> top12WorstGirlName2016() {
+        return parisData.getRecords().stream().filter(records -> records.getFields().getSexe().equals("F"))
+                .filter(records -> records.getFields().getAnnee() == 2016)
+                .sorted((obj1, obj2) -> obj1.getFields().getNombre() - obj2.getFields().getNombre())
+                .limit(12)
+                .map(records -> records.getFields().getPrenoms())
+                .collect(Collectors.toList());
     }
 
 }
