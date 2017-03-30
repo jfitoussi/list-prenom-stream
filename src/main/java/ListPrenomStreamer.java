@@ -4,11 +4,9 @@ import models.Records;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -23,6 +21,7 @@ public class ListPrenomStreamer {
     }
 
     public static void main(String[] args) throws IOException {
+        //ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
 
         System.out.println("Number of records : ");
@@ -154,25 +153,42 @@ public class ListPrenomStreamer {
 
     }
 
-    public  Map<Integer, Map<Character, Integer>> top5_of_best_first_letter_by_year() {
+    public  Map<Integer, List<Character>>  top5_of_best_first_letter_by_year() {
 
-        return parisData.getRecords().stream()
-                .filter(records -> records.getFields().getPrenoms()!=null)
-                .collect(Collectors.groupingBy(t -> t.getFields().getAnnee(), Collectors.groupingBy(records -> records.getFields().getPrenoms().charAt(0), Collectors.summingInt(records -> records.getFields().getNombre()))));
-
-
+        Map<Integer, Map<Character, Integer>> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms() != null)
+                .collect(Collectors.groupingBy(t -> t.getFields().getAnnee(), Collectors.groupingBy(records -> records.getFields().getPrenoms().charAt(0),
+                        Collectors.summingInt(records -> records.getFields().getNombre()))));
+        Map<Integer, List<Character>> letters_by_years = new HashMap<Integer, List<Character>>();
+        for (Map.Entry<Integer, Map<Character, Integer>> entry : sum.entrySet()){
+            List <Character> letters = entry.getValue().entrySet().stream().sorted(Map.Entry.<Character, Integer>comparingByValue().reversed())
+                    .limit(5)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+            letters_by_years.put(entry.getKey(), letters);
+        }
+        return letters_by_years;
     }
 
-    public List<String> top24_best_letters_from_2009_to_2016() {
+    public List<Character> top24_best_letters_from_2009_to_2016() {
 
-        return null;
+        Map<Character, Integer> sum = parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms() != null)
+                .filter(records -> records.getFields().getAnnee() >= 2009 && records.getFields().getAnnee() <= 2016)
+                .collect(Collectors.groupingBy(t -> t.getFields().getPrenoms().charAt(0), Collectors.summingInt(records -> records.getFields().getNombre())));
+
+        return sum.entrySet().stream()
+                .sorted(Map.Entry.<Character, Integer>comparingByValue().reversed())
+                .limit(24)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
 
     }
 
     public List<String> top12WorstGirlName2016() {
         return parisData.getRecords().stream().filter(records -> records.getFields().getSexe().equals("F"))
                 .filter(records -> records.getFields().getAnnee() == 2016)
-                .sorted((obj1, obj2) -> obj1.getFields().getNombre() - obj2.getFields().getNombre())
+                .sorted(Comparator.comparingInt(t->t.getFields().getNombre()))
                 .limit(12)
                 .map(records -> records.getFields().getPrenoms())
                 .collect(Collectors.toList());
