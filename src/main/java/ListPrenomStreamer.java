@@ -159,7 +159,7 @@ public class ListPrenomStreamer {
         return parisData.getRecords().stream()
                 .map(Records::getFields)
                 .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
-        //Il faut un distinct sur les prenoms 
+        //Il faut un distinct sur les prenoms
 
     }
 
