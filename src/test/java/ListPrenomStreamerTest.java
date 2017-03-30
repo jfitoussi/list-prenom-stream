@@ -1,16 +1,17 @@
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import models.Records;
 import org.junit.Test;
-import java.io.IOException;
+
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.contains;
 public class ListPrenomStreamerTest {
-
 
     @Test
     public void size_should_be_10() throws Exception {
@@ -102,6 +103,28 @@ public class ListPrenomStreamerTest {
         assertThat(nameFrom2009to2016.size(), is(10));
         assertThat(nameFrom2009to2016, contains("Pauline","Coralie","Claire","Yani","Michel","Ting","Imane","Clément","Mouche","Marcel"));
 
+    }
+
+    @Test
+    public void top5ofBestFirstLettersByYear(){
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+
+        Map<Integer, Long> map =  listPrenomStreamer.top5ofBestFirstLettersByYear();
+
+        System.out.println(map);
+    }
+
+    @Test
+    public  void TestApi(){
+        try {
+            String res_api = ListPrenomStreamer.sendGet();
+            ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(res_api,0);
+            System.out.println(res_api);
+            System.out.println(listPrenomStreamer.getParisData().getRecords().size());
+            assertEquals(listPrenomStreamer.getSize(), 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
