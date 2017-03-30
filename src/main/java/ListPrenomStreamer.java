@@ -138,9 +138,13 @@ public class ListPrenomStreamer {
 
     }
 
-    public List<String> top5_of_best_first_letter_by_year() {
 
-        return null;
+    public  Map<Integer, Map<Character, Integer>> top5_of_best_first_letter_by_year() {
+
+        return parisData.getRecords().stream()
+                .filter(records -> records.getFields().getPrenoms()!=null)
+                .collect(Collectors.groupingBy(t -> t.getFields().getAnnee(), Collectors.groupingBy(records -> records.getFields().getPrenoms().charAt(0), Collectors.summingInt(records -> records.getFields().getNombre()))));
+
 
     }
 
