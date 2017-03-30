@@ -1,5 +1,9 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,6 +15,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+import com.sun.javaws.exceptions.ErrorCodeResponseException;
 import models.Fields;
 import models.ParisData;
 import models.Records;
@@ -20,14 +25,49 @@ public class ListPrenomStreamer {
     private static final Gson GSON = new Gson();
     private ParisData parisData;
 
+    // Constructor to read from file
     public ListPrenomStreamer(String filename) {
         InputStreamReader inputStreamReader = new InputStreamReader(getClass().getResourceAsStream(filename));
         this.parisData = GSON.fromJson(inputStreamReader, ParisData.class);
     }
 
+    // Constructor to load from the API with no specified of number data
+    public ListPrenomStreamer(String url, String dataset){
+        this(url,dataset,10000);
+    }
+
+    // Constructor where all parameters are passed
+    public ListPrenomStreamer(String url, String dataset,int Nb_Data){
+        String fullUrl = url + "?dataset=" + dataset + "&rows=" + Nb_Data ;
+        try {
+            URL urlObj = new URL(fullUrl);
+            try {
+                HttpURLConnection connection = ((HttpURLConnection) urlObj.openConnection());
+                connection.setRequestMethod("GET");
+
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    BufferedReader receiveData = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    this.parisData = GSON.fromJson(receiveData, ParisData.class);
+
+                }else{
+                    System.err.println("Error in the passed parameter");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        System.out.println(listPrenomStreamer.namesIntervall());
+        // Read from file
+//        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        // Read from API
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("https://opendata.paris.fr/api/records/1.0/search/","liste_des_prenoms_2004_a_2012");
+
+        // Print of differents results
         System.out.println("TOTAL SIZE : " + listPrenomStreamer.getSize());
         System.out.println("TOP 3 NAME 2010 : " + listPrenomStreamer.top3name2010());
         System.out.println("TOP 3 NAME BOY 2012 : " + listPrenomStreamer.top3NameBoy2012());
@@ -100,8 +140,8 @@ public class ListPrenomStreamer {
 		
 		
 		return res;	
-    }			           
-		
+    }
+
     public List<String> top5name2009to2016() {
 
         List<Fields> data = parisData.getRecords().stream()
@@ -117,7 +157,7 @@ public class ListPrenomStreamer {
         return groupedMap.entrySet().stream()
                 .sorted((o1, o2) -> o2.getValue() - o1.getValue())
                 .limit(5)
-                .map(stringIntegerEntry -> stringIntegerEntry.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
@@ -205,7 +245,7 @@ public class ListPrenomStreamer {
         return groupedMap.entrySet().stream()
                 .sorted((o1, o2) -> o2.getValue() - o1.getValue())
                 .limit(24)
-                .map(stringIntegerEntry -> stringIntegerEntry.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
     }
