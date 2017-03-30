@@ -30,4 +30,10 @@ public class ListPrenomStreamerTest {
 
         assertThat(listPrenomStreamer.top3NameGirl2009(),is(Arrays.asList("Louise", "Camille", "Chloe")));
     }
+    
+    @Test 
+    public void names_Present_2009_To_2016() throws Exception{
+    	ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+    	assertThat(listPrenomStreamer.namesIntervall(),is(Arrays.asList("Adam","Alexandre")));
+    }
 }
