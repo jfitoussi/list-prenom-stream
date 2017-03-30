@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.contains;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(30));
+        assertThat(listPrenomStreamer.getSize(), is(28));
     }
     
     @Test
@@ -83,21 +82,21 @@ public class ListPrenomStreamerTest {
     	// Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
         Map<String,List<String>> genderNamesMap = listPrenomStreamer.namesByGenre();
-        for(int i = 0 ; i < genderNamesMap.get("M").size(); i++){
-        	System.out.println(genderNamesMap.get("M").get(i));
-        }
         // Then
-        assertThat(genderNamesMap.get("M").size(), is(18));
+        assertThat(genderNamesMap.get("M").size(), is(17));
+        assertThat(genderNamesMap.get("F").size(), is(19));
     }
     
     @Test
-    public void justIn2011() throws Exception {
+    public void best5ByYear() throws Exception {
     	// Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
-        List<String> justIn2011 = listPrenomStreamer.nameAppearIn2011();
+        Map<Integer, Map<String, Integer>> best5 = listPrenomStreamer.best5Letters();
+//        System.out.println(best5.get(2016).get("S"));
         // Then
-        assertThat(justIn2011, contains("Patricia","Tulipe"));
+        assertThat(best5.get(2016).get("S"), is(2727));
     }
+    
     
 
 }
