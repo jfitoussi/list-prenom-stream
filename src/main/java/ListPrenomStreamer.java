@@ -23,15 +23,42 @@ public class ListPrenomStreamer {
 
     public static void main(String[] args) throws IOException {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+
+        System.out.println("Number of records : ");
         System.out.println(listPrenomStreamer.getSize());
+
+        System.out.println(" \nTop 3 of best name in 2010 : ");
         System.out.println(listPrenomStreamer.top3name2010());
+
+        System.out.println(" \nTop 3 of best girl name in 2009 : ");
         System.out.println(listPrenomStreamer.top3girlname2009());
+
+        System.out.println(" \nTop 3 of best boy name in 2012 : ");
         System.out.println(listPrenomStreamer.top3boyname2012());
+
+        System.out.println(" \nTop 5 of best name from 2009 to 2016 : ");
         System.out.println(listPrenomStreamer.top5bestname2009_2016());
+
+        System.out.println(" \nTop 10 of worst name from 2009 to 2016 : ");
         System.out.println(listPrenomStreamer.top10worstname2009_2016());
+
+        System.out.println(" \nTop 12 of worst girl name in 2016 : ");
         System.out.println(listPrenomStreamer.top12WorstGirlName2016());
 
+        System.out.println(" \nAll names by gender : ");
         System.out.println(listPrenomStreamer.allnamebygender());
+
+        System.out.println(" \nName appear just in 2011 : ");
+        System.out.println(listPrenomStreamer.nameappearjustin20112016());
+
+        System.out.println(" \nAll names present from 2009 to 2016 : ");
+        System.out.println(listPrenomStreamer.allnamepresentfrom2009to2016());
+
+        System.out.println(" \nTop 5 of the best first letter by year : ");
+        System.out.println(listPrenomStreamer.top5_of_best_first_letter_by_year());
+
+        System.out.println(" \nTop 24 of best letters from 2009 to 2016 : ");
+        System.out.println(listPrenomStreamer.top24_best_letters_from_2009_to_2016());
     }
 
     public int getSize() {
@@ -89,6 +116,32 @@ public class ListPrenomStreamer {
         return parisData.getRecords().stream()
                 .collect(Collectors.groupingBy(records -> records.getFields().getSexe(), Collectors.mapping(records
                         ->records.getFields().getPrenoms(), Collectors.toSet())));
+
+    }
+
+
+
+    public  List<String> nameappearjustin20112016() {
+
+        return null;
+
+    }
+
+    public  List<String> allnamepresentfrom2009to2016() {
+
+        return null;
+
+    }
+
+    public  List<String> top5_of_best_first_letter_by_year() {
+
+        return null;
+
+    }
+
+    public  List<String> top24_best_letters_from_2009_to_2016() {
+
+        return null;
 
     }
 
