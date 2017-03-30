@@ -116,20 +116,19 @@ public class ListPrenomStreamerTest {
         assertThat(listPrenomStreamer.allNamesPresent2009To2016(), containsInAnyOrder("Lisa", "Adam"));
     }
 
-//    @Test
-//    public void top5BestFirstLetterByYearTest() throws Exception {
-//        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_5_best_first_letter_by_year.json");
-//        Map<String, List<String>> result = listPrenomStreamer.top5BestFirstLetterByYear();
-//
-//        assertThat(result.size(), is(2));
-//        assertTrue(result.containsKey("2016"));
-//        assertTrue(result.containsKey("2009"));
-//        assertThat(result.get("2016").size(), is(5));
-//        assertThat(result.get("2009").size(), is(5));
-//        assertThat(result.get("2016"), containsInAnyOrder("A", "B", "C", "D", "E"));
-//        assertThat(result.get("2009"), containsInAnyOrder("Z", "Y", "X", "W", "V"));
-//    }
+    @Test
+    public void top5BestFirstLetterByYearTest() throws Exception {
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_5_best_first_letter_by_year.json");
+        Map<Integer, List<Character>> result = listPrenomStreamer.top5BestFirstLetterByYear();
 
+        assertThat(result.size(), is(8));
+
+        for (int i = 2009; i <= 2016; i++) {
+            assertTrue(result.containsKey(i));
+            assertThat(result.get(i).size(), is(5));
+            assertThat(result.get(i), contains('A', 'B', 'C', 'D', 'E'));
+        }
+    }
 //    @Test
 //    public void top24BestLettersTest() throws Exception {
 //        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("top_24_best_letters.json");

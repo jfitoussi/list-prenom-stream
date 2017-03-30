@@ -147,4 +147,38 @@ public class ListPrenomStreamer {
                 .map(stringListPair -> stringListPair.first)
                 .collect(Collectors.toList());
     }
+
+    public Map<Integer, List<Character>> top5BestFirstLetterByYear() {
+        List<Integer> annees = new ArrayList<>();
+        Function<Records, Pair<Integer,Pair<Character,Integer>>> toTuple = r -> {
+            int annee = r.getFields().getAnnee();
+            char c = r.getFields().getPrenoms().charAt(0);
+            int nb = r.getFields().getNombre();
+            Pair<Character,Integer> pair = new Pair<>(c,nb);
+            pair.last += r.getFields().getNombre();
+            if (!annees.contains(annee)) {
+                annees.add(annee);
+            }
+            return new Pair<>(annee,pair);
+        };
+        Map<Integer, List<Character>> result = new HashMap<>();
+        List<Pair<Integer,Pair<Character,Integer>>> pairs = parisData.getRecords().stream()
+                .map(toTuple)
+                .sorted((t1, t2) -> t2.last.last - t1.last.last)
+                .collect(Collectors.toList());
+        for (int annee : annees) {
+            pairs.stream()
+                    .filter(pairPair -> pairPair.first == annee)
+                    .limit(5)
+                    .forEach(pairPair -> {
+                        int year = pairPair.first;
+                        List<Character> list = result.getOrDefault(year, new ArrayList<>());
+                        if (list.size() < 5) {
+                            list.add(pairPair.last.first);
+                        }
+                        result.put(year, list);
+                    });
+        }
+        return result;
+    }
 }
