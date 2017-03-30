@@ -60,6 +60,7 @@ public class ListPrenomStreamer {
 
         System.out.println(" \nTop 24 of best letters from 2009 to 2016 : ");
         System.out.println(listPrenomStreamer.top24_best_letters_from_2009_to_2016());
+
     }
 
     public int getSize() {
@@ -123,21 +124,35 @@ public class ListPrenomStreamer {
 
     }
 
-
     public List<String> nameappearjustin20112016() {
 
-        List<String> nameIn2011 = parisData.getRecords().stream().map(records -> records.getFields()).filter(records -> records.getAnnee() == 2011).map(records -> records.getPrenoms()).distinct().collect(Collectors.toList());
-        List<String> nameNotIn2011 = parisData.getRecords().stream().map(records -> records.getFields()).filter(records -> records.getAnnee() != 2011).map(records -> records.getPrenoms()).distinct().collect(Collectors.toList());
-        List<String> name2011 = nameIn2011.stream().filter(records -> !nameNotIn2011.contains(records)).collect(Collectors.toList());
+        List<String> nameIn2011 = parisData.getRecords().stream()
+                .map(records -> records.getFields())
+                .filter(records -> records.getAnnee() == 2011).map(records -> records.getPrenoms())
+                .distinct().collect(Collectors.toList());
+
+        List<String> nameNotIn2011 = parisData.getRecords().stream().
+                map(records -> records.getFields())
+                .filter(records -> records.getAnnee() != 2011).map(records -> records.getPrenoms())
+                .distinct().collect(Collectors.toList());
+
+        List<String> name2011 = nameIn2011.stream()
+                .filter(records -> !nameNotIn2011.contains(records))
+                .collect(Collectors.toList());
+
         return name2011;
     }
 
     public List<String> allnamepresentfrom2009to2016() {
 
-        return null;
+        List<String> nameFrom2009to2016 = parisData.getRecords().stream()
+                .map(records -> records.getFields())
+                .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016)
+                .map(fields -> fields.getPrenoms())
+                .distinct().collect(Collectors.toList());
+        return nameFrom2009to2016;
 
     }
-
 
     public  Map<Integer, Map<Character, Integer>> top5_of_best_first_letter_by_year() {
 

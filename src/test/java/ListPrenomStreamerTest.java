@@ -102,14 +102,27 @@ public class ListPrenomStreamerTest {
         // 350 - 240 - 100 - 100 - 100
     }
 
+    @Test
     public void name_appear_just_in_2011() throws Exception {
         // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("nameappearjustin2011.json");
 
         List<String> name2011 = listPrenomStreamer.nameappearjustin20112016();
         // Then
-        assertThat(name2011.size(), is(50));
-        assertThat(name2011, contains("Asia, Dayane, Eleanore, Franklin, Dov, Feryel, Honore, Leticia, Niame, Hadriel, Marie-Ange, Samson, Shayan, Sihem, NoÃ¢m, Angeline, Dalla, Darren, Tsipora, Yuri, Allegra, Gwenaëlle, Keira, Leontine, Louca, Noan, Nohan, Peter, Prudence, Shannon, Tea, Zacharia, Zephyr, Alisha, Arman, Cassie, Farouk, Anabelle, Arij, Armelle, Mustapha, Nala, Sven, Yoel, Cosima, Inza, Issiaka, Jacqueline, Prosper, Shirine"));
+        assertThat(name2011.size(), is(3));
+        assertThat(name2011, contains("Coralie", "Yani", "Michel"));
+
+    }
+
+    @Test
+    public void allnamepresentfrom2009to2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("allnamepresentfrom2009to2016.json");
+
+        List<String> nameFrom2009to2016 = listPrenomStreamer.allnamepresentfrom2009to2016();
+        // Then
+        assertThat(nameFrom2009to2016.size(), is(10));
+        assertThat(nameFrom2009to2016, contains("Pauline","Coralie","Claire","Yani","Michel","Ting","Imane","Clément","Mouche","Marcel"));
 
     }
 }
