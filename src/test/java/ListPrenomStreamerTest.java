@@ -20,7 +20,7 @@ public class ListPrenomStreamerTest {
     public void top_3_name_2010() throws Exception{
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
-        assertThat(listPrenomStreamer.top3name2010(),is(Arrays.asList("Louise","Arthur","Raphael")));
+        assertThat(listPrenomStreamer.top3name2010(),is(Arrays.asList("Louise","Arthur","RaphaÃ«l")));
     }
     		
     @Test
@@ -51,7 +51,7 @@ public class ListPrenomStreamerTest {
         assertThat(listPrenomStreamer.top5name2009to2016(),is(Arrays.asList("Gabriel",
                 "Adam",
                 "Louise",
-                "Raphaël",
+                "RaphaÃ«l",
                 "Arthur")));
 
     }
@@ -61,10 +61,10 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         assertThat(listPrenomStreamer.top10WorstName2009To2016(),is(Arrays.asList("Ibrahim",
-                                                                                  "Maël",
+                                                                                  "MaÃ«l",
                                                                                   "Baptiste",
-                                                                                  "Noé",
-                                                                                  "Ismaël",
+                                                                                  "NoÃ©",
+                                                                                  "IsmaÃ«l",
                                                                                   "Ethan",
                                                                                   "Liam",
                                                                                   "Victor",
@@ -78,14 +78,14 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2016.json");
         assertThat(listPrenomStreamer.top12WorstGirlName2016(),is(Arrays.asList("Alyah",
                                                                                 "Appoline",
-                                                                                "Athéna",
+                                                                                "AthÃ©na",
                                                                                 "Audrey",
                                                                                 "Elyana",
-                                                                                "Geneviève",
+                                                                                "GeneviÃ¨ve",
                                                                                 "Hadja",
                                                                                 "Kendra",
                                                                                 "Laya",
-                                                                                "Maï",
+                                                                                "MaÃ¯",
                                                                                 "Maxime",
                                                                                 "Saja")));
     }
@@ -133,6 +133,6 @@ public class ListPrenomStreamerTest {
                 "K",
                 "Z",
                 "W",
-                "É")));
+                "Ã‰")));
     }
 }
