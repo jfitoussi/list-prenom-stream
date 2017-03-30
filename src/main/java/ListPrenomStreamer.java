@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,13 +24,45 @@ public class ListPrenomStreamer {
     public static void main(String[] args) throws IOException {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
 
-        System.out.println("Size : " + listPrenomStreamer.getSize());
-        System.out.println("Top 3 names 2010 : " + listPrenomStreamer.top3Names2010());
-        System.out.println("Top 3 names girls 2009 : " + listPrenomStreamer.top3NamesGirl2009());
-        System.out.println("Top 3 names boys 2012 : " + listPrenomStreamer.top3NamesBoys2012());
-        System.out.println("Top 5 names between 2009 and 2016: " + listPrenomStreamer.top5Names2009to2016());
-        System.out.println("Top 10 worst names between 2009 and 2016: " + listPrenomStreamer.top10WorstNames2009to2016());
+        System.out.println("Il y a  : " + listPrenomStreamer.getSize() + " records");
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 3 meilleurs prenoms en 2010 : ");
+        System.out.println(listPrenomStreamer.top3Names2010());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 3 meilleurs prenoms feminins en 2009 : ");
+        System.out.println(listPrenomStreamer.top3NamesGirl2009());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 3 meilleurs prenoms masculins en 2012 : ");
+        System.out.println(listPrenomStreamer.top3NamesBoys2012());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 5 meilleurs prenoms entre 2009 and 2016 : ");
+        System.out.println(listPrenomStreamer.top5Names2009to2016());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 10 pires prenoms entre 2009 et 2016 : ");
+        System.out.println(listPrenomStreamer.top10WorstNames2009to2016());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 12 pires prenoms feminins en 2016 : ");
+        System.out.println(listPrenomStreamer.getTop12WorstGirlName2016());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des prenoms triés par genre : ");
+        System.out.println(listPrenomStreamer.getAllNamesByGender());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des prenoms apparus uniquement en 2011 : ");
+        System.out.println(listPrenomStreamer.getNamesAppearsIn2011());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des prenoms presents entre 2009 et 2016 : ");
         System.out.println("All names present from 2009 to 2016 :" + "(Size -> " + listPrenomStreamer.AllNamesPresentFrom2009To2016().size() + ")" + listPrenomStreamer.AllNamesPresentFrom2009To2016());
+        System.out.println("----------------------");
+
     }
 
     public int getSize() {
@@ -45,12 +78,14 @@ public class ListPrenomStreamer {
     }
 
     public List<String> top3NamesGirl2009() {
+
         return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2009)
                 .filter(records -> records.getFields().getSexe().equals("F"))
                 .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
                 .limit(3)
                 .map(record -> record.getFields().getPrenoms())
                 .collect(Collectors.toList());
+
     }
 
     public List<String> top3NamesBoys2012() {
@@ -73,14 +108,51 @@ public class ListPrenomStreamer {
         return top5name2009to2016Stream.collect(Collectors.toList());
     }
 
+    public List<String> getTop12WorstGirlName2016(){
+        return parisData.getRecords().stream()
+                .map(Records::getFields)
+                .filter(fields -> fields.getAnnee() == 2016)
+                .filter(fields -> fields.getSexe().equals("F"))
+                .sorted(Comparator.comparingInt(Fields::getNombre))
+                .map(Fields::getPrenoms)
+                .limit(12)
+                .collect(Collectors.toList());
+    }
+
+
+    public Map<String, List<String>> getAllNamesByGender(){
+
+        return parisData.getRecords().stream()
+                .map(Records::getFields)
+                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList()) ));
+
+    }
+
+    public List<String> getNamesAppearsIn2011() {
+
+        List<String> nameOf20042016 = parisData.getRecords().stream()
+                .map(Records::getFields)
+                .filter(fields -> fields.getAnnee() != 2011)
+                .map(Fields::getPrenoms)
+                .collect(Collectors.toList());
+
+        return parisData.getRecords().stream()
+                .map(Records::getFields)
+                .filter(fields -> fields.getAnnee() == 2011)
+                .filter(fields -> !nameOf20042016.contains(fields.getPrenoms()))
+                .map(Fields::getPrenoms)
+                .collect(Collectors.toList());
+    }
+
     public List<String> AllNamesPresentFrom2009To2016() {
-        List<String> AllNamesPresentFrom2009To2016 = parisData.getRecords().stream()
+
+        return parisData.getRecords().stream()
                 .map(records -> records.getFields())
                 .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016)
                 .map(fields -> fields.getPrenoms())
                 .distinct()
                 .collect(Collectors.toList());
-        return AllNamesPresentFrom2009To2016;
+
     }
 
     public List<String> top10WorstNames2009to2016() {

@@ -10,6 +10,7 @@ public class ParisData {
 
     private final List<Records> records;
 
+
     ParisData(List<Records> recordss) {
         this.records = recordss;
     }
