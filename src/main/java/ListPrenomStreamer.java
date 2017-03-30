@@ -4,7 +4,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,14 +39,9 @@ public class ListPrenomStreamer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
-        System.out.println(listPrenomStreamer.getSize());
-        System.out.println(listPrenomStreamer.top3name2008());
-        try {
-            listPrenomStreamer.sendGet();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        //System.out.println(listPrenomStreamer.getSize());
+        //System.out.println(listPrenomStreamer.top3name2008());
     }
 
     public int getSize() {
@@ -115,6 +113,7 @@ public class ListPrenomStreamer {
         };
 
         Stream<Records> stream = parisData.getRecords().stream().filter(records -> (records.getFields().getAnnee() == 2016 && records.getFields().getSexe().equals("F")));
+
         stream = stream.sorted(comparator).limit(12);
         return stream.collect(Collectors.toList());
     }
@@ -148,4 +147,44 @@ public class ListPrenomStreamer {
         return response.toString();
     }
 
+
+    public Map<Integer, Long> top5ofBestFirstLettersByYear(){
+
+        List<Records> recordsList = parisData.getRecords();
+        Function<Records, String> getNameFunction = records -> {return records.getFields().getPrenoms();};
+        Comparator<Records> comparatorPrenom = (Records r1, Records r2)-> {
+                return ((Character)r1.getFields().getPrenoms().charAt(0)).compareTo(r2.getFields().getPrenoms().charAt(0));
+        };
+
+
+        Map<Integer, List<Character>> result = new HashMap<>();
+
+
+
+        Stream<Records> streamRecords = parisData.getRecords().stream();
+        Stream<Records> streamRecords2 = parisData.getRecords().stream();
+//        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
+        // ok System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
+        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
+        // ok 2 System.out.println(streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
+        streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))).entrySet().stream().
+                sorted();
+        return null;
+        /*
+        Stream<Records> prenoms = recordsList.stream().sorted(comparatorPrenom);
+
+
+        Map<Integer, List<String>> ageDistribution =
+                recordsList.stream().collect(Collectors.groupingBy( , listPrenom));
+        //Map<Integer, Long> ageDistribution = recordsList.stream().sorted(comparator).collect(Collectors.groupingBy(Records::getAnnee, Collectors.counting()));
+
+
+
+        return ageDistribution;
+        */
+    }
+
+    public ParisData getParisData() {
+        return parisData;
+    }
 }
