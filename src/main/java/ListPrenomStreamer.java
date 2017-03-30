@@ -23,7 +23,7 @@ public class ListPrenomStreamer {
     }
 
     public static void main(String[] args) throws IOException {
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012.json");
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer("liste_des_prenoms_2004_a_2012_short.json");
 
         System.out.println("Il y a  : " + listPrenomStreamer.getSize() + " records");
         System.out.println("----------------------");
@@ -40,7 +40,7 @@ public class ListPrenomStreamer {
         System.out.println(listPrenomStreamer.top3NamesBoys2012());
         System.out.println("----------------------");
 
-        System.out.println("La liste des 5 meilleurs prenoms entre 2009 and 2016 : ");
+        System.out.println("La liste des 5 meilleurs prenoms entre 2009 et 2016 : ");
         System.out.println(listPrenomStreamer.top5Names2009to2016());
         System.out.println("----------------------");
 
@@ -61,9 +61,15 @@ public class ListPrenomStreamer {
         System.out.println("----------------------");
 
         System.out.println("La liste des prenoms presents entre 2009 et 2016 : ");
-        System.out.println("All names present from 2009 to 2016 :" + "(Size -> " + listPrenomStreamer.AllNamesPresentFrom2009To2016().size() + ")" + listPrenomStreamer.AllNamesPresentFrom2009To2016());
-        System.out.println("Top5OfTheBestFirstLetterByYear :" + "(Size -> " + listPrenomStreamer.Top5ofTheBestFirstLetterByYear().size() + ")" + listPrenomStreamer.Top5ofTheBestFirstLetterByYear());
-        System.out.println("Top24ofBestLettersFrom2009To2016 :" + "(Size -> " + listPrenomStreamer.Top24ofBestLettersFrom2009To2016().size() + ")" + listPrenomStreamer.Top24ofBestLettersFrom2009To2016());
+        System.out.println(listPrenomStreamer.AllNamesPresentFrom2009To2016());
+        System.out.println("----------------------");
+
+        System.out.println("Les listes des 5 meilleures premieres lettres par année : ");
+        System.out.println(listPrenomStreamer.Top5ofTheBestFirstLetterByYear());
+        System.out.println("----------------------");
+
+        System.out.println("La liste des 24 meilleures lettres de 2009 à 2016 : ");
+        System.out.println(listPrenomStreamer.Top24ofBestLettersFrom2009To2016());
         System.out.println("----------------------");
 
     }
@@ -73,11 +79,13 @@ public class ListPrenomStreamer {
     }
 
     public List<String> top3Names2010() {
+
         return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2010)
                 .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
                 .limit(3)
                 .map(record -> record.getFields().getPrenoms())
                 .collect(Collectors.toList());
+
     }
 
     public List<String> top3NamesGirl2009() {
@@ -92,15 +100,18 @@ public class ListPrenomStreamer {
     }
 
     public List<String> top3NamesBoys2012() {
+
         return parisData.getRecords().stream().filter(record -> record.getFields().getAnnee() == 2012)
                 .filter(records -> records.getFields().getSexe().equals("M"))
                 .sorted((o1, o2) -> o2.getFields().getNombre() - o1.getFields().getNombre())
                 .limit(3)
                 .map(record -> record.getFields().getPrenoms())
                 .collect(Collectors.toList());
+
     }
 
     public List<String> top5Names2009to2016() {
+
         Comparator<Fields> topOrder = Comparator.comparingInt(Fields::getNombre);
         Stream<String> top5name2009to2016Stream = parisData.getRecords()
                 .stream()
@@ -109,9 +120,29 @@ public class ListPrenomStreamer {
                 .filter(field -> field.getAnnee() >= 2009 && field.getAnnee() <= 2016)
                 .map(Fields::getPrenoms).distinct().limit(5);
         return top5name2009to2016Stream.collect(Collectors.toList());
+
+    }
+
+    public List<String> top10WorstNames2009to2016() {
+
+        Comparator<Fields> topOrder = Comparator.comparingInt(Fields::getNombre);
+        Stream<String> top10WorstName2009to2016Stream = parisData.getRecords()
+                .stream()
+                .map(Records::getFields)
+                .filter(field -> null != field.getPrenoms())
+                .sorted(topOrder)
+                .filter(field -> field.getAnnee() >= 2009 && field.getAnnee() <= 2016)
+                .map(Fields::getPrenoms)
+                .distinct()
+                .sorted()
+                .limit(10);
+
+        return top10WorstName2009to2016Stream.collect(Collectors.toList());
+
     }
 
     public List<String> getTop12WorstGirlName2016(){
+
         return parisData.getRecords().stream()
                 .map(Records::getFields)
                 .filter(fields -> fields.getAnnee() == 2016)
@@ -120,6 +151,7 @@ public class ListPrenomStreamer {
                 .map(Fields::getPrenoms)
                 .limit(12)
                 .collect(Collectors.toList());
+
     }
 
 
@@ -127,7 +159,8 @@ public class ListPrenomStreamer {
 
         return parisData.getRecords().stream()
                 .map(Records::getFields)
-                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList()) ));
+                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
+        //Il faut un distinct sur les prenoms
 
     }
 
@@ -145,33 +178,27 @@ public class ListPrenomStreamer {
                 .filter(fields -> !nameOf20042016.contains(fields.getPrenoms()))
                 .map(Fields::getPrenoms)
                 .collect(Collectors.toList());
+
     }
 
     public List<String> AllNamesPresentFrom2009To2016() {
 
+        Map<Integer, List<String>> mapByYear2009to2016 = parisData.getRecords().stream()
+                .map(Records::getFields)
+                .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016 && fields.getPrenoms()!= null)
+                .collect(Collectors.groupingBy(Fields::getAnnee, Collectors.mapping(Fields::getPrenoms, Collectors.toList()) ));
+
+        int howManyYear = mapByYear2009to2016.size();
+
         return parisData.getRecords().stream()
-                .map(records -> records.getFields())
-                .filter(fields -> fields.getAnnee() >= 2009 && fields.getAnnee() <= 2016)
-                .map(fields -> fields.getPrenoms())
+                .map(Records::getFields)
+                .filter(f -> mapByYear2009to2016.keySet().stream()
+                        .filter(integer -> mapByYear2009to2016.get(integer).contains(f.getPrenoms()))
+                        .count() == howManyYear)
+                .map(Fields::getPrenoms)
                 .distinct()
                 .collect(Collectors.toList());
 
-    }
-
-    public List<String> top10WorstNames2009to2016() {
-        Comparator<Fields> topOrder = Comparator.comparingInt(Fields::getNombre);
-        Stream<String> top10WorstName2009to2016Stream = parisData.getRecords()
-                .stream()
-                .map(Records::getFields)
-                .filter(field -> null != field.getPrenoms())
-                .sorted(topOrder)
-                .filter(field -> field.getAnnee() >= 2009 && field.getAnnee() <= 2016)
-                .map(Fields::getPrenoms)
-                .distinct()
-                .sorted()
-                .limit(10);
-
-        return top10WorstName2009to2016Stream.collect(Collectors.toList());
     }
 
     public Map Top5ofTheBestFirstLetterByYear() {
