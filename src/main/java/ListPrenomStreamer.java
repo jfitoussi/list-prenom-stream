@@ -155,12 +155,11 @@ public class ListPrenomStreamer {
     }
 
 
-    public Map<String, List<String>> getAllNamesByGender(){
+    public Map<String, Set<String>> getAllNamesByGender(){
 
         return parisData.getRecords().stream()
                 .map(Records::getFields)
-                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toList())));
-        //Il faut un distinct sur les prenoms
+                .collect(Collectors.groupingBy(Fields::getSexe, Collectors.mapping(Fields::getPrenoms, Collectors.toSet())));
 
     }
 
