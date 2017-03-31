@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ListPrenomStreamerTest {
 
@@ -18,7 +19,7 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
 
         // Then
-        assertThat(listPrenomStreamer.getSize(), is(15324)); //A changer à la fin
+        assertThat(listPrenomStreamer.getSize(), is(59));
     }
 
     @Test
@@ -29,7 +30,7 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(top3name.size(), is(3));
-        assertThat(top3name, contains("Gabriel", "Louise", "Arthur"));
+        assertThat(top3name, contains("Bilal", "Brandon", "Joy"));
     }
 
     @Test
@@ -40,7 +41,7 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(top3name.size(), is(3));
-        assertThat(top3name, contains("Louise", "Camille", "Chloe"));
+        assertThat(top3name, contains("Marine", "Melina", "Liam"));
     }
 
     @Test
@@ -51,7 +52,7 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(top3name.size(), is(3));
-        assertThat(top3name, contains("Gabriel", "Adam", "Arthur"));
+        assertThat(top3name, contains("Nanti", "Leo", "Etienne"));
     }
 
     @Test
@@ -62,19 +63,7 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(top3name.size(), is(5));
-        assertThat(top3name, contains("Gabriel", "Adam", "Louise", "Raphaël", "Arthur"));
-    }
-
-    @Test
-    public void TestAllNamesPresentFrom2009To2016() throws Exception {
-
-        // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
-        List<String> AllNamesPresentFrom2009To2016 = listPrenomStreamer.AllNamesPresentFrom2009To2016();
-
-        // Then
-        assertThat(AllNamesPresentFrom2009To2016.size(), is(10));
-        assertThat(AllNamesPresentFrom2009To2016, contains("Adam", "Alexandre", "Victor", "Liam", "Ethan", "Ismaël", "Noé", "Baptiste", "Maël", "Ibrahim"));
+        assertThat(top3name, contains("Bilal", "Brandon", "Nanti", "Leo", "Marine"));
     }
 
     @Test
@@ -85,8 +74,54 @@ public class ListPrenomStreamerTest {
 
         // Then
         assertThat(top3name.size(), is(10));
-        assertThat(top3name, contains("Aaliyah", "Aaron", "Abby", "Abd", "Abdallah", "Abdel", "Abdelkader", "Abderrahmane", "Abdou", "Abdoul"));
+        assertThat(top3name, contains("Alexandre", "Alice", "Anatole", "Baptiste", "Bilal", "Boule", "Brandon", "Brian", "Carl", "Catherine"));
     }
+
+    @Test
+    public void top12WorstGirlNamesIn2016() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
+        List<String> top12WorstGirlNameIn2016 = listPrenomStreamer.getTop12WorstGirlName2016();
+
+        // Then
+        assertThat(top12WorstGirlNameIn2016.size(), is(12));
+        assertThat(top12WorstGirlNameIn2016, contains("Pierra", "Nadine", "Mariane", "Michelle", "Claire", "Catherine", "Henrietta", "Isabelle", "Noemie", "Melanie", "Pauline", "Lucie"));
+    }
+
+    @Test
+    public void NamesByGender() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
+        Map<String, Set<String>> namesByGender = listPrenomStreamer.getAllNamesByGender();
+
+        // Then
+        assertThat(namesByGender.get("F").size(), is(23));
+        assertThat(namesByGender.get("F"), contains("Celine", "Chloé", "Noemie",
+                "Michelle", "Pauline", "Melanie", "Henrietta", "Catherine", "Paula",
+                "Paul", "Liam", "Melina", "Pierra", "Claire", "Nadine", "Mariane",
+                "Nadia", "Marine", "Manon", "Lucie", "Joy", "Isabelle", "Elodie"));
+        assertThat(namesByGender.get("X").size(), is(3));
+        assertThat(namesByGender.get("X"), contains("Bilal", "Alice", "Alexandre"));
+        assertThat(namesByGender.get("M").size(), is(24));
+        assertThat(namesByGender.get("M"), contains("Marc", "Baptiste", "Carl",
+                "Nolan", "Harold", "Brandon", "Nanti", "Etienne", "Victor", "Malik",
+                "Brian", "Maël", "Ibrahim", "Vlad", "Damien", "Kris", "Fabrice", "Sakris",
+                "Léonard", "Hadrien", "Boule", "Leo", "Félix", "Anatole"));
+    }
+
+    @Test
+    public void TestAllNamesPresentFrom2009To2016() throws Exception {
+
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
+        List<String> AllNamesPresentFrom2009To2016 = listPrenomStreamer.AllNamesPresentFrom2009To2016();
+
+        // Then
+        assertThat(AllNamesPresentFrom2009To2016.size(), is(1));
+        assertThat(AllNamesPresentFrom2009To2016, contains("Brandon"));
+    }
+
+
 
     @Test
     public void TestTop5ofTheBestFirstLetterByYear() throws Exception {
