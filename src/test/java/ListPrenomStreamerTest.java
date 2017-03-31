@@ -14,7 +14,7 @@ public class ListPrenomStreamerTest {
     String JsonFileShort = "liste_des_prenoms_2004_a_2012_short.json";
 
     @Test
-    public void sizeOfRecords() throws Exception {
+    public void sizeOfRecordsTest() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
 
@@ -23,7 +23,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NamesIn2010() throws Exception {
+    public void top3NamesIn2010Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.top3Names2010();
@@ -34,7 +34,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NamesGirl2009() throws Exception {
+    public void top3NamesGirl2009Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.top3NamesGirl2009();
@@ -45,7 +45,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top3NamesBoys2012() throws Exception {
+    public void top3NamesBoys2012Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.top3NamesBoys2012();
@@ -56,7 +56,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top5NamesBetween2009To2016() throws Exception {
+    public void top5NamesBetween2009To2016Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.top5Names2009to2016();
@@ -67,7 +67,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top10WorstNamesBetween2009To2016() throws Exception {
+    public void top10WorstNamesBetween2009To2016Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.top10WorstNames2009to2016();
@@ -78,7 +78,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void top12WorstGirlNamesIn2016() throws Exception {
+    public void top12WorstGirlNamesIn2016Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top12WorstGirlNameIn2016 = listPrenomStreamer.getTop12WorstGirlName2016();
@@ -89,7 +89,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void NamesByGender() throws Exception {
+    public void NamesByGenderTest() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         Map<String, Set<String>> namesByGender = listPrenomStreamer.getAllNamesByGender();
@@ -110,21 +110,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void TestAllNamesPresentFrom2009To2016() throws Exception {
-
-        // Given
-        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
-        List<String> AllNamesPresentFrom2009To2016 = listPrenomStreamer.AllNamesPresentFrom2009To2016();
-
-        // Then
-        assertThat(AllNamesPresentFrom2009To2016.size(), is(1));
-        assertThat(AllNamesPresentFrom2009To2016, contains("Brandon"));
-    }
-
-
-
-    @Test
-    public void TestGetNamesAppearsIn2011() throws Exception {
+    public void getNamesAppearsIn2011Test() throws Exception {
         // Given
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<String> top3name = listPrenomStreamer.getNamesAppearsIn2011();
@@ -135,13 +121,25 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void TestTop5ofTheBestFirstLetterByYear() throws Exception {
+    public void allNamesPresentFrom2009To2016Test() throws Exception {
+
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
+        List<String> AllNamesPresentFrom2009To2016 = listPrenomStreamer.AllNamesPresentFrom2009To2016();
+
+        // Then
+        assertThat(AllNamesPresentFrom2009To2016.size(), is(1));
+        assertThat(AllNamesPresentFrom2009To2016, contains("Brandon"));
+    }
+
+    @Test
+    public void top5ofTheBestFirstLetterByYearTest() throws Exception {
 
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         Map<Integer, List<Character>> Top5ofTheBestFirstLetterByYear = listPrenomStreamer.Top5ofTheBestFirstLetterByYear();
 
         assertThat(Top5ofTheBestFirstLetterByYear.size(), is(8));
-        assertThat(Top5ofTheBestFirstLetterByYear.get(2016), contains('L', 'V', 'B', 'M', 'N'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2016), contains('B', 'M', 'V', 'L', 'N'));
         assertThat(Top5ofTheBestFirstLetterByYear.get(2009), contains('M', 'F', 'L', 'C', 'B'));
         assertThat(Top5ofTheBestFirstLetterByYear.get(2010), contains('B', 'J', 'N', 'E', 'A'));
         assertThat(Top5ofTheBestFirstLetterByYear.get(2011), contains('B', 'C', 'M', 'V', 'H'));
@@ -152,7 +150,7 @@ public class ListPrenomStreamerTest {
     }
 
     @Test
-    public void TestTop24ofBestLettersFrom2009To2016() throws Exception {
+    public void top24ofBestLettersFrom2009To2016Test() throws Exception {
 
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<Character> Top24ofBestLettersFrom2009To2016 = listPrenomStreamer.Top24ofBestLettersFrom2009To2016();
