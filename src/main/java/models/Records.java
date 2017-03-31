@@ -6,6 +6,13 @@ public class Records {
         return fields;
     }
 
+    public char getFirstLetter(){
+        return fields.getPrenoms().charAt(0);
+    }
+
+    public int getAnnee(){
+        return fields.getAnnee();
+    }
     private final Fields fields;
 
     private Records(Fields fields) {
