@@ -124,12 +124,31 @@ public class ListPrenomStreamerTest {
 
 
     @Test
+    public void TestGetNamesAppearsIn2011() throws Exception {
+        // Given
+        ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
+        List<String> top3name = listPrenomStreamer.getNamesAppearsIn2011();
+
+        // Then
+        assertThat(top3name.size(), is(3));
+        assertThat(top3name, contains("Harold", "Malik", "Vlad"));
+    }
+
+    @Test
     public void TestTop5ofTheBestFirstLetterByYear() throws Exception {
 
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
-        Map Top5ofTheBestFirstLetterByYear = listPrenomStreamer.Top5ofTheBestFirstLetterByYear();
+        Map<Integer, List<Character>> Top5ofTheBestFirstLetterByYear = listPrenomStreamer.Top5ofTheBestFirstLetterByYear();
 
-        assertThat(Top5ofTheBestFirstLetterByYear.size(), is(1));
+        assertThat(Top5ofTheBestFirstLetterByYear.size(), is(8));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2016), contains('L', 'V', 'B', 'M', 'N'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2009), contains('M', 'F', 'L', 'C', 'B'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2010), contains('B', 'J', 'N', 'E', 'A'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2011), contains('B', 'C', 'M', 'V', 'H'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2012), contains('L', 'N', 'B', 'E', 'C'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2013), contains('P', 'B', 'S', 'D'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2014), contains('B'));
+        assertThat(Top5ofTheBestFirstLetterByYear.get(2015), contains('C', 'B'));
     }
 
     @Test
@@ -138,8 +157,8 @@ public class ListPrenomStreamerTest {
         ListPrenomStreamer listPrenomStreamer = new ListPrenomStreamer(JsonFileShort);
         List<Character> Top24ofBestLettersFrom2009To2016 = listPrenomStreamer.Top24ofBestLettersFrom2009To2016();
 
-        assertThat(Top24ofBestLettersFrom2009To2016.size(), is(24));
-        assertThat(Top24ofBestLettersFrom2009To2016, contains('A', 'M', 'L', 'E', 'C', 'S', 'J', 'N', 'R', 'G', 'I', 'T', 'H', 'V', 'P', 'B', 'Y', 'D', 'O', 'F', 'K', 'Z', 'W', 'É'));
+        assertThat(Top24ofBestLettersFrom2009To2016.size(), is(16));
+        assertThat(Top24ofBestLettersFrom2009To2016, contains('B', 'M', 'N', 'L', 'C', 'P', 'J', 'E', 'A', 'F', 'V', 'I', 'H', 'S', 'D', 'K'));
     }
 
 }
