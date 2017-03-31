@@ -120,17 +120,18 @@ public class ListPrenomStreamer {
 
 
         Map<Integer, List<Character>> result = new HashMap<>();
-
+        result.entrySet().stream().
+                sorted((o1, o2) -> o1.getKey());
 
 
         Stream<Records> streamRecords = parisData.getRecords().stream();
         Stream<Records> streamRecords2 = parisData.getRecords().stream();
 //        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
         // ok System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
-        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getFirstLetter, Collectors.mapping(Records::getFields, Collectors.summingInt(value -> value.getNombre())))));
+        System.out.println(streamRecords.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.groupingBy(o -> o.getPrenoms().charAt(0))))));
         // ok 2 System.out.println(streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))));
-        streamRecords2.collect(Collectors.groupingBy(Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))).entrySet().stream().
-                sorted();
+        streamRecords2.collect(Collectors.groupingBy
+                (Records::getAnnee, Collectors.mapping(Records::getFields, Collectors.toList()))).entrySet().stream().sorted();
         return null;
         /*
         Stream<Records> prenoms = recordsList.stream().sorted(comparatorPrenom);

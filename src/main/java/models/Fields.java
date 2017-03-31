@@ -29,4 +29,9 @@ public class Fields {
         this.prenoms = prenoms;
         this.sexe = sexe;
     }
+
+    @Override
+    public String toString() {
+        return this.prenoms;
+    }
 }
